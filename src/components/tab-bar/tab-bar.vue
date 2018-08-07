@@ -23,10 +23,11 @@ export default{}
     width: 100%;
     height: 44px;
     line-height: 44px;
+    font-size: $font-size-medium;
     .tab-item{
       flex: 1;
       text-align: center;
-      color: #fff;
+    color: #aaa;
       &.router-link-active{
         color: $themeColor;
         border-bottom: 2px $themeColor solid;
