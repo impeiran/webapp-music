@@ -22,9 +22,4 @@ export default {
 
 <style lang="scss">
   @import "common/scss/index.scss";
-  #app{
-    width: 100%;
-    max-width: 1080px;
-    margin: 0 auto;
-  }
 </style>

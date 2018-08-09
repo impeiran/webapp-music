@@ -5,6 +5,9 @@
         <home-swiper :slider="slider"></home-swiper>
         <home-list :albumList="songList"></home-list>
       </div>
+      <div class="loading-wrapper" v-show="!slider.length || !songList.length">
+        <loading></loading>
+      </div>
     </scroll>
   </div>
 </template>
@@ -14,12 +17,14 @@ import axios from 'axios'
 import scroll from 'components/base/scroll'
 import homeSwiper from 'components/homeSwiper/homeSwiper'
 import homeList from 'components/homeList/homeList'
+import loading from 'components/base/loading'
 
 export default {
   components: {
     scroll,
     homeSwiper,
-    homeList
+    homeList,
+    loading
   },
   data () {
     return {

@@ -15,6 +15,9 @@
         </li>
 
       </ul>
+      <div class="loading-wrapper">
+        <loading></loading>
+      </div>
     </scroll>
   </div>
 </template>
@@ -22,10 +25,12 @@
 <script>
 import scroll from 'components/base/scroll'
 import axios from 'axios'
+import loading from 'components/base/loading'
 
 export default {
   components: {
-    scroll
+    scroll,
+    loading
   },
   data () {
     return {
