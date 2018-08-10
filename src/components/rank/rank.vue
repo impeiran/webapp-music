@@ -2,7 +2,7 @@
   <div class="rank">
     <scroll class="rank-wrapper">
       <ul>
-        <li class="rank-item" v-for="item in topList" :key="item.id">
+        <li class="rank-item" v-for="item in topList" :key="item.id" @click="selectAlbum(item.id)">
           <div class="rank-pic">
             <img v-lazy="item.picUrl" alt="">
           </div>
@@ -19,6 +19,7 @@
         <loading></loading>
       </div>
     </scroll>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -45,6 +46,11 @@ export default {
             this.topList = res.data.data.topList
           }
         })
+    },
+    selectAlbum (id) {
+      this.$router.push({
+        path: `/rank/${id}`
+      })
     }
   },
   mounted () {
