@@ -1,5 +1,5 @@
 <template>
-  <albumDetail></albumDetail>
+  <albumDetail :data="album"></albumDetail>
 </template>
 
 <script>
@@ -20,7 +20,7 @@ export default {
       let id = this.$route.query.id
       getRankAlbum(id).then(res => {
         if (!res.code) {
-          console.log(res)
+          // console.log(res)
           this.album = this._normalizeAlbum(res)
         }
       })
@@ -43,7 +43,6 @@ export default {
         songFilter.push(obj)
       }
       ret.songlist = songFilter
-      console.log(ret)
       return ret
     }
   },

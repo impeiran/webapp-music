@@ -47,7 +47,6 @@ export default {
   },
   watch: {
     data () {
-      console.log(this.data)
       setTimeout(() => {
         this.refresh()
       }, 20)

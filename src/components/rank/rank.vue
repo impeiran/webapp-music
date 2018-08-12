@@ -13,9 +13,8 @@
             </li>
           </ul>
         </li>
-
       </ul>
-      <div class="loading-wrapper">
+      <div class="loading-wrapper" v-show="!topList">
         <loading></loading>
       </div>
     </scroll>
