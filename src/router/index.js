@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import home from 'components/home/home'
 import rank from 'components/rank/rank'
 import search from 'components/search/search'
-import album from 'components/album/album'
+import rankAlbum from 'components/rankAlbum/rankAlbum'
 
 Vue.use(Router)
 
@@ -38,8 +38,8 @@ export default new Router({
       component: rank,
       children: [
         {
-          path: ':id',
-          component: album
+          path: '/rank/detail',
+          component: rankAlbum
         }
       ]
     },

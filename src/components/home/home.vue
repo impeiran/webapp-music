@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { getHomeData } from 'api/index.js'
 import scroll from 'components/base/scroll'
 import homeSwiper from 'components/homeSwiper/homeSwiper'
 import homeList from 'components/homeList/homeList'
@@ -34,15 +34,12 @@ export default {
   },
   methods: {
     getHome () {
-      axios.get('api/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg?g_tk=5381&uin=0&format=json&inCharset=utf-8&outCharset=utf-8&notice=0&platform=h5&needNewCode=1&_=1531362909109'
-      )
-        .then((res) => {
-          if (!res.data.code) {
-            let data = res.data.data
-            this.slider = data.slider
-            this.songList = data.songList
-          }
-        })
+      getHomeData().then(res => {
+        if (!res.code) {
+          this.slider = res.data.slider
+          this.songList = res.data.songList
+        }
+      })
     }
   },
   mounted () {

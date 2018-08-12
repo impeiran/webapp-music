@@ -24,8 +24,8 @@
 </template>
 
 <script>
+import {getRankData} from 'api/index.js'
 import scroll from 'components/base/scroll'
-import axios from 'axios'
 import loading from 'components/base/loading'
 
 export default {
@@ -40,16 +40,18 @@ export default {
   },
   methods: {
     getRank () {
-      axios.get('api/v8/fcg-bin/fcg_myqq_toplist.fcg?g_tk=5381&uin=0&format=json&inCharset=utf-8&outCharset=utf-8&notice=0&platform=h5&needNewCode=1&_=1533667513091')
-        .then((res) => {
-          if (!res.data.code) {
-            this.topList = res.data.data.topList
-          }
-        })
+      getRankData().then(res => {
+        if (!res.code) {
+          this.topList = res.data.topList
+        }
+      })
     },
     selectAlbum (id) {
       this.$router.push({
-        path: `/rank/${id}`
+        path: '/rank/detail',
+        query: {
+          id: id
+        }
       })
     }
   },
