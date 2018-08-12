@@ -4,7 +4,7 @@
       <div class="goback" @click="back">
         <i class="iconfont icon-back"></i>
       </div>
-      <div class="album-info">
+      <div class="album-info" ref="info">
         <div class="bg" :style="bgPic"></div>
         <div class="content">
           <div class="title">
@@ -18,7 +18,8 @@
         </div>
       </div>
       <div class="song-list">
-        <scroll  class="song-scroll">
+        <scroll  class="song-scroll" :probe-type="probeType" @scroll="scroll"
+          :listen-scroll="listenScroll" >
           <div>
             <album-song v-for="(item, index) in data.songlist" :key="item.id" :data="item" :index="index"></album-song>
           </div>
@@ -43,6 +44,14 @@ export default {
       default: null
     }
   },
+  data () {
+    return {
+      bgLimit: -206,
+      probeType: 3,
+      listenScroll: true,
+      scrollY: 0
+    }
+  },
   components: {
     scroll,
     loading,
@@ -56,6 +65,16 @@ export default {
   methods: {
     back () {
       this.$router.back()
+    },
+    scroll (pos) {
+      this.scrollY = pos.y
+    }
+  },
+  watch: {
+    scrollY (newY) {
+      if (newY < 0) {
+        this.$refs.info.style['top'] = Math.max(newY, this.bgLimit) + 'px'
+      }
     }
   },
   mounted () {
@@ -81,7 +100,7 @@ export default {
     top: 0;
     left: 0;
     text-align: center;
-    z-index: 20;
+    z-index: 30;
     .iconfont{
     font-size: 24px;
     color: $themeColor;
@@ -91,8 +110,10 @@ export default {
     width: 100%;
     height: 276px;
     position: relative;
+    top: 0;
     background: #333;
     overflow: hidden;
+    z-index: 20;
     .bg{
       width: 100%;
       height: 100%;
@@ -133,6 +154,10 @@ export default {
       }
     }
   }
+  .cap{
+    position: relative;
+    top: 0;
+  }
   .song-list{
     position: fixed;
     top: 276px;
@@ -142,7 +167,6 @@ export default {
     box-sizing: border-box;
     .song-scroll{
       height: 100%;
-      overflow: hidden;
     }
   }
 }
