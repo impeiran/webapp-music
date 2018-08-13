@@ -11,7 +11,7 @@
             {{data.name}}
           </div>
           <img v-lazy="data.pic">
-          <div class="btn">
+          <div class="btn" v-show="data.songlist">
             <i class="iconfont icon-play"></i>
             <span>播放全部</span>
           </div>
@@ -23,7 +23,7 @@
           <div>
             <album-song v-for="(item, index) in data.songlist" :key="item.id" :data="item" :index="index"></album-song>
           </div>
-          <div class="loading-wrapper">
+          <div class="loading-wrapper" v-show="!data.songlist">
             <loading></loading>
           </div>
         </scroll>
@@ -36,6 +36,9 @@
 import scroll from 'components/base/scroll'
 import loading from 'components/base/loading'
 import albumSong from 'components/base/albumSong'
+import {prefixStyle} from 'common/js/dom.js'
+
+const transform = prefixStyle('transform')
 
 export default {
   props: {
@@ -46,7 +49,7 @@ export default {
   },
   data () {
     return {
-      bgLimit: -206,
+      bgLimit: -208,
       probeType: 3,
       listenScroll: true,
       scrollY: 0
@@ -73,7 +76,9 @@ export default {
   watch: {
     scrollY (newY) {
       if (newY < 0) {
-        this.$refs.info.style['top'] = Math.max(newY, this.bgLimit) + 'px'
+        this.$refs.info.style[transform] = `translate3d(0,${Math.max(newY, this.bgLimit)}px,0)`
+      } else {
+        this.$refs.info.style[transform] = 'translate3d(0,0,0)'
       }
     }
   },
@@ -100,7 +105,7 @@ export default {
     top: 0;
     left: 0;
     text-align: center;
-    z-index: 30;
+    z-index: 200;
     .iconfont{
     font-size: 24px;
     color: $themeColor;
@@ -113,7 +118,7 @@ export default {
     top: 0;
     background: #333;
     overflow: hidden;
-    z-index: 20;
+    z-index: 100;
     .bg{
       width: 100%;
       height: 100%;

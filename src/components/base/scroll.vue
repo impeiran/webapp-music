@@ -21,6 +21,10 @@ export default {
       type: Boolean,
       default: false
     },
+    bounceTime: {
+      type: Number,
+      default: 550
+    },
     data: {
       type: Array,
       default: null
@@ -44,7 +48,8 @@ export default {
       }
       this.scroll = new Bscroll(this.$refs.wrapper, {
         probeType: this.probeType,
-        click: this.click
+        click: this.click,
+        bounceTime: this.bounceTime
       })
       if (this.listenScroll) {
         let self = this
