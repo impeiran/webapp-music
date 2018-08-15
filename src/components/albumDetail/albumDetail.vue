@@ -19,9 +19,13 @@
       </div>
       <div class="song-list">
         <scroll  class="song-scroll" :probe-type="probeType" @scroll="scroll"
-          :listen-scroll="listenScroll" >
+          :listen-scroll="listenScroll">
           <div>
-            <album-song v-for="(item, index) in data.songlist" :key="item.id" :data="item" :index="index"></album-song>
+            <album-song v-for="(item, index) in data.songlist"
+                        :key="item.id"
+                        :data="item"
+                        :index="index"
+                        @choose="selectItem(item, index)"></album-song>
           </div>
           <div class="loading-wrapper" v-show="!data.songlist">
             <loading></loading>
@@ -37,6 +41,7 @@ import scroll from 'components/base/scroll'
 import loading from 'components/base/loading'
 import albumSong from 'components/base/albumSong'
 import {prefixStyle} from 'common/js/dom.js'
+import {mapGetters, mapActions} from 'vuex'
 
 const transform = prefixStyle('transform')
 
@@ -58,7 +63,10 @@ export default {
   components: {
     scroll,
     loading,
-    albumSong
+    albumSong,
+    ...mapGetters([
+      'playlist'
+    ])
   },
   computed: {
     bgPic () {
@@ -71,7 +79,19 @@ export default {
     },
     scroll (pos) {
       this.scrollY = pos.y
-    }
+    },
+    selectItem (item, index) {
+      this.selectPlay({
+        list: this.data.songlist,
+        index
+      })
+    },
+    test () {
+      console.log('test')
+    },
+    ...mapActions([
+      'selectPlay'
+    ])
   },
   watch: {
     scrollY (newY) {
@@ -122,7 +142,7 @@ export default {
     .bg{
       width: 100%;
       height: 100%;
-      filter: blur(20px);
+      filter: blur(20px) brightness(70%);
       z-index: -1;
     }
     .content{

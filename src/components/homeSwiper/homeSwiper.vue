@@ -1,7 +1,7 @@
 <template>
   <div class="hs-wrapper">
-    <swiper :options="swiperOption">
-      <swiper-slide v-for="item in slider" :key="item.id">
+    <swiper :options="swiperOption" ref="mySwiper">
+      <swiper-slide v-for="item in slider" :key="item.id" ref="mySwiper">
         <a :href="item.linkUrl">
           <img :src="item.picUrl" alt="">
         </a>
@@ -18,7 +18,11 @@ export default {
       swiperOption: {
         pagination: '.swiper-pagination',
         loop: true,
-        autoplay: 2000
+        autoplay: {
+          autoplay: true,
+          delay: 1000,
+          disableOnInteraction: false
+        }
       }
     }
   },
@@ -27,6 +31,9 @@ export default {
       type: Array,
       default: null
     }
+  },
+  beforeDestroy () {
+    this.$refs.mySwiper.swiper.stopAutoplay()
   }
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div class="album-song">
+  <div class="album-song" @click="select">
     <div class="num">
       {{index+1}}
     </div>
@@ -20,6 +20,11 @@ export default {
     index: {
       type: Number,
       default: 0
+    }
+  },
+  methods: {
+    select () {
+      this.$emit('choose')
     }
   }
 }

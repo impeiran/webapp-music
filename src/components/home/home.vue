@@ -54,6 +54,7 @@ export default {
   position: fixed;
   top: 96px;
   bottom: 0;
+  z-index: 10;
   .home-content{
     height: 100%;
     overflow: hidden;

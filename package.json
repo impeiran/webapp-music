@@ -15,6 +15,7 @@
     "better-scroll": "^1.12.6",
     "fastclick": "^1.0.6",
     "vue": "^2.5.2",
+    "vuex": "^2.3.1",
     "vue-awesome-swiper": "2.6.7",
     "vue-lazyload": "^1.2.6",
     "vue-router": "^3.0.1"

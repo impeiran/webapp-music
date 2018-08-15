@@ -4,6 +4,7 @@
 
 <script>
 import {getRankAlbum} from 'api/index.js'
+import Album from 'common/js/album.js'
 import albumDetail from 'components/albumDetail/albumDetail'
 
 export default {
@@ -21,29 +22,10 @@ export default {
       getRankAlbum(id).then(res => {
         if (!res.code) {
           // console.log(res)
-          this.album = this._normalizeAlbum(res)
+          this.album = new Album(res)
+          console.log(this.album)
         }
       })
-    },
-    _normalizeAlbum (data) {
-      let ret = {}
-      let songFilter = []
-      ret.name = data.topinfo.ListName
-      ret.pic = data.topinfo.pic_album
-      for (let val of data.songlist) {
-        let obj = {}
-        let singer = []
-        obj.id = val.data.songid
-        obj.mid = val.data.songmid
-        obj.name = val.data.songname
-        for (let i of val.data.singer) {
-          singer.push(i.name)
-        }
-        obj.singer = singer.join(' / ')
-        songFilter.push(obj)
-      }
-      ret.songlist = songFilter
-      return ret
     }
   },
   mounted () {

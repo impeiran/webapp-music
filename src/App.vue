@@ -5,17 +5,20 @@
     <keep-alive>
       <router-view></router-view>
     </keep-alive>
+    <player></player>
   </div>
 </template>
 
 <script>
 import mainHeader from 'components/mainHeader/mainHeader'
 import tabBar from 'components/tab-bar/tab-bar'
+import player from 'components/player/player'
 
 export default {
   components: {
     mainHeader,
-    tabBar
+    tabBar,
+    player
   }
 }
 </script>

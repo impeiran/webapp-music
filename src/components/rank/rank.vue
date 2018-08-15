@@ -67,6 +67,7 @@ export default {
     width: 100%;
     position: fixed;
     top: 96px;
+    left: 0;
     bottom: 0;
     .rank-wrapper{
       height: 100%;
