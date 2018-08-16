@@ -10,6 +10,9 @@ import store from './store'
 
 import 'swiper/dist/css/swiper.css'
 
+// window.MessageChannel = noop
+// window.setImmediate = noop
+
 Vue.config.productionTip = false
 
 fastClick.attach(document.body)
@@ -28,3 +31,6 @@ new Vue({
   template: '<App/>',
   store
 })
+
+// function noop () {
+// }

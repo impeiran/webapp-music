@@ -1,4 +1,8 @@
 'use strict'
+var express = require('express')
+var axios = require('axios')
+var app = express()
+var apiRoutes = express.Router()
 const utils = require('./utils')
 const webpack = require('webpack')
 const config = require('../config')

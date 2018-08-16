@@ -16,12 +16,18 @@
           <img :src="currentSong.pic" :class="picRt">
         </div>
         <div class="lyric"></div>
-        <div class="progress-wrapper"></div>
+        <div class="progress-wrapper">
+          <span class="time-l">{{format(currentTime)}}</span>
+          <div class="progress-bar-wrapper">
+            <progress-bar :percent="percent" @percentChange="onPercentChange"></progress-bar>
+          </div>
+          <span class="time-r">{{format(currentSong.duration)}}</span>
+        </div>
         <div class="operator">
-          <i class="iconfont icon-list"></i>
-          <i class="iconfont icon-prev"></i>
+          <i @click="togglePlayMode" :class="playMode"></i>
+          <i @click="prev" class="iconfont icon-prev"></i>
           <i @click="togglePlaying" class="iconfont" :class="playIcon"></i>
-          <i class="iconfont icon-next"></i>
+          <i @click="next" class="iconfont icon-next"></i>
           <i class="iconfont icon-music"></i>
         </div>
       </div>
@@ -34,19 +40,39 @@
           <span>{{currentSong.singer}}</span>
         </div>
         <div class="mini-operator">
-          <i class="iconfont icon-prev"></i>
+          <i @click.stop="prev" class="iconfont icon-prev"></i>
           <i @click.stop="togglePlaying" class="iconfont" :class="playIcon"></i>
-          <i class="iconfont icon-next"></i>
+          <i @click.stop="next" class="iconfont icon-next"></i>
         </div>
      </div>
     </transition>
-    <audio ref="audio" :src="currentSong.url"></audio>
+    <audio ref="audio" :src="currentUrl"
+          @canplay="ready"
+          @error="error"
+          @timeupdate="updateTime"
+          @ended="end"></audio>
   </div>
 </template>
 
 <script>
+import {getMusicVkey, getLyric} from 'api/index.js'
 import {mapGetters, mapMutations} from 'vuex'
+import progressBar from 'components/base/progressBar'
+import {gobase64} from 'common/js/lyric'
+import Lyric from 'lyric-parser'
+
 export default {
+  components: {
+    progressBar
+  },
+  data () {
+    return {
+      currentUrl: '',
+      songReady: false,
+      currentTime: '',
+      currentLyric: null
+    }
+  },
   computed: {
     playIcon () {
       return this.playing ? 'icon-pause' : 'icon-play'
@@ -54,11 +80,19 @@ export default {
     picRt () {
       return this.playing ? 'play' : 'play pause'
     },
+    percent () {
+      return this.currentTime / this.currentSong.duration
+    },
+    playMode () {
+      return this.mode === 0 ? 'iconfont icon-list' : 'iconfont icon-one-loop'
+    },
     ...mapGetters([
       'fullScreen',
       'playlist',
       'currentSong',
-      'playing'
+      'playing',
+      'currentIndex',
+      'mode'
     ])
   },
   methods: {
@@ -68,26 +102,120 @@ export default {
     up () {
       this.setFullScreen(true)
     },
+    prev () {
+      if (!this.songReady) {
+        return
+      }
+      if (this.currentIndex === 0) {
+        this.setCurrentIndex(this.playlist.length - 1)
+      } else {
+        this.setCurrentIndex(this.currentIndex - 1)
+      }
+      if (!this.playing) {
+        this.togglePlaying()
+      }
+      this.songReady = false
+    },
+    next () {
+      if (!this.songReady) {
+        return
+      }
+      let index = this.currentIndex + 1
+      if (index === this.playlist.length) {
+        index = 0
+      }
+      this.setCurrentIndex(index)
+      if (!this.playing) {
+        this.togglePlaying()
+      }
+      this.songReady = false
+    },
+    loop () {
+      this.$refs.audio.currentTime = 0
+      this.$refs.audio.play()
+      this.setPlayingState(true)
+    },
+    end () {
+      if (this.mode === 1) {
+        this.loop()
+      } else if (this.mode === 0) {
+        this.next()
+      }
+    },
     togglePlaying () {
       this.setPlayingState(!this.playing)
     },
+    togglePlayMode () {
+      const mode = (this.mode + 1) % 2
+      this.setPlayMode(mode)
+    },
+    ready () {
+      this.songReady = true
+    },
+    error () {
+      this.songReady = true
+    },
+    _pad (num, n = 2) {
+      let len = num.toString().length
+      while (len < n) {
+        num = '0' + num
+        len++
+      }
+      return num
+    },
+    format (interval) {
+      interval = interval | 0
+      const minute = interval / 60 | 0
+      const second = this._pad(interval % 60)
+      return `${minute}:${second}`
+    },
+    updateTime (e) {
+      this.currentTime = e.target.currentTime
+    },
+    onPercentChange (percent) {
+      const currentTime = this.currentSong.duration * percent
+      this.$refs.audio.currentTime = currentTime
+      if (!this.playing) {
+        this.togglePlaying()
+      }
+    },
     ...mapMutations({
       setFullScreen: 'SET_FULL_SCREEN',
-      setPlayingState: 'SET_PLAYING_STATE'
+      setPlayingState: 'SET_PLAYING_STATE',
+      setCurrentIndex: 'SET_CURRENT_INDEX',
+      setPlayMode: 'SET_PLAY_MODE'
     })
   },
   watch: {
-    currentSong () {
-      this.$nextTick(() => {
-        this.$refs.audio.play()
+    currentSong (newSong) {
+      getMusicVkey(newSong.mid).then(res => {
+        if (!res.code) {
+          this.currentUrl = `http://dl.stream.qqmusic.qq.com/C400${newSong.mid}.m4a?guid=5290231985&vkey=${res.data.items[0].vkey}&uin=0&fromtag=38`
+          this.$nextTick(() => {
+            this.$refs.audio.play()
+            getLyric(newSong.mid).then(res => {
+              this.currentLyric = new Lyric(gobase64(res.lyric))
+            })
+          })
+        }
       })
     },
     playing (newPlaying) {
-      this.$nextTick(() => {
-        const audio = this.$refs.audio
-        newPlaying ? audio.play() : audio.pause()
-      })
+      if (this.currentUrl) {
+        this.$nextTick(() => {
+          const audio = this.$refs.audio
+          newPlaying ? audio.play() : audio.pause()
+        })
+      }
     }
+    // currentUrl (newUrl) {
+    //   console.log(newUrl)
+    //   if (newUrl && this.songReady && this.playing) {
+    //     this.$nextTick(() => {
+    //       this.$refs.audio.play()
+    //     })
+    //   }
+    // }
   }
 }
 </script>
@@ -178,8 +306,21 @@ export default {
         // background-color: #fff;
       }
       .progress-wrapper{
+        display: flex;
+        align-items: center;
+        justify-content: center;
         width: 100%;
         height: 50px;
+        .time-l, .time-r{
+          display: inline-block;
+          width: 28px;
+          text-align: center;
+          font-size: $font-size-medium;
+        }
+        .progress-bar-wrapper{
+          margin: 0 14px;
+          width: 62%;
+        }
       }
       .operator{
         display: flex;

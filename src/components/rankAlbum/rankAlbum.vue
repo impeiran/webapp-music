@@ -21,7 +21,6 @@ export default {
       let id = this.$route.query.id
       getRankAlbum(id).then(res => {
         if (!res.code) {
-          // console.log(res)
           this.album = new Album(res)
           console.log(this.album)
         }

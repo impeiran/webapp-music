@@ -16,11 +16,13 @@ export default {
   data () {
     return {
       swiperOption: {
-        pagination: '.swiper-pagination',
+        pagination: {
+          el: '.swiper-pagination'
+        },
         loop: true,
         autoplay: {
           autoplay: true,
-          delay: 1000,
+          delay: 1500,
           disableOnInteraction: false
         }
       }
@@ -32,8 +34,16 @@ export default {
       default: null
     }
   },
-  beforeDestroy () {
-    this.$refs.mySwiper.swiper.stopAutoplay()
+  computed: {
+    swiper () {
+      return this.$refs.mySwiper.swiper
+    }
+  },
+  activated () {
+    this.swiper.autoplay.start()
+  },
+  deactivated () {
+    this.swiper.autoplay.stop()
   }
 }
 </script>

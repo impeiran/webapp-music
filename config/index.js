@@ -11,11 +11,18 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/api': {
+      '/chaser': {
         target: 'https://c.y.qq.com/',
         changeOrigin: true,
         pathRewrite: {
-          '^/api': '/'
+          '^/chaser': '/'
+        }
+      },
+      '/Tec': {
+        target: 'http://ustbhuangyi.com/',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/Tec': '/'
         }
       }
     },
