@@ -15,7 +15,19 @@
         <div class="pic-box">
           <img :src="currentSong.pic" :class="picRt">
         </div>
-        <div class="lyric"></div>
+        <div class="lyric" ref="lyricBox">
+          <scroll ref="lyricList" :data="currentLyric && currentLyric.lines" class="lyric-inner" >
+            <div>
+              <div v-if="currentLyric">
+              <p class="text"
+                ref="lyricLine"
+                :class="{'current': currentLineNum === index}"
+                v-for="(line,index) in currentLyric.lines"
+                :key="index">{{line.txt}}</p>
+              </div>
+            </div>
+          </scroll>
+        </div>
         <div class="progress-wrapper">
           <span class="time-l">{{format(currentTime)}}</span>
           <div class="progress-bar-wrapper">
@@ -58,19 +70,23 @@
 import {getMusicVkey, getLyric} from 'api/index.js'
 import {mapGetters, mapMutations} from 'vuex'
 import progressBar from 'components/base/progressBar'
+import scroll from 'components/base/scroll'
 import {gobase64} from 'common/js/lyric'
 import Lyric from 'lyric-parser'
 
 export default {
   components: {
-    progressBar
+    progressBar,
+    scroll
   },
   data () {
     return {
       currentUrl: '',
       songReady: false,
       currentTime: '',
-      currentLyric: null
+      currentLyric: null,
+      currentLineNum: 0,
+      playingLyric: ''
     }
   },
   computed: {
@@ -85,6 +101,11 @@ export default {
     },
     playMode () {
       return this.mode === 0 ? 'iconfont icon-list' : 'iconfont icon-one-loop'
+    },
+    midLine () {
+      const boxHeightHalf = this.$refs.lyricBox.offsetHeight / 2
+      const lineHeight = 32
+      return Math.floor(boxHeightHalf / lineHeight)
     },
     ...mapGetters([
       'fullScreen',
@@ -134,6 +155,9 @@ export default {
       this.$refs.audio.currentTime = 0
       this.$refs.audio.play()
       this.setPlayingState(true)
+      if (this.currentLyric) {
+        this.currentLyric.seek(0)
+      }
     },
     end () {
       if (this.mode === 1) {
@@ -142,8 +166,21 @@ export default {
         this.next()
       }
     },
+    handleLyric ({ lineNum, txt }) {
+      this.currentLineNum = lineNum
+      if (lineNum > this.midLine) {
+        let lineEl = this.$refs.lyricLine[lineNum - this.midLine]
+        this.$refs.lyricList.scrollToElement(lineEl, 200)
+      } else {
+        this.$refs.lyricList.scrollTo(0, 0, 100)
+      }
+      this.playingLyric = txt
+    },
     togglePlaying () {
       this.setPlayingState(!this.playing)
+      if (this.currentLyric) {
+        this.currentLyric.togglePlay()
+      }
     },
     togglePlayMode () {
       const mode = (this.mode + 1) % 2
@@ -178,6 +215,9 @@ export default {
       if (!this.playing) {
         this.togglePlaying()
       }
+      if (this.currentLyric) {
+        this.currentLyric.seek(currentTime * 1000)
+      }
     },
     ...mapMutations({
       setFullScreen: 'SET_FULL_SCREEN',
@@ -187,18 +227,42 @@ export default {
     })
   },
   watch: {
-    currentSong (newSong) {
+    currentSong (newSong, oldSong) {
       getMusicVkey(newSong.mid).then(res => {
         if (!res.code) {
           this.currentUrl = `http://dl.stream.qqmusic.qq.com/C400${newSong.mid}.m4a?guid=5290231985&vkey=${res.data.items[0].vkey}&uin=0&fromtag=38`
           this.$nextTick(() => {
             this.$refs.audio.play()
             getLyric(newSong.mid).then(res => {
-              this.currentLyric = new Lyric(gobase64(res.lyric))
+              this.currentLyric = new Lyric(gobase64(res.lyric), this.handleLyric)
+              this.$refs.lyricList.refresh()
+              if (this.playing) {
+                this.currentLyric.play()
+              }
+            }).catch(() => {
+              this.currentLyric = null
+              this.playingLyric = ''
+              this.currentLineNum = 0
             })
           })
         }
       })
+      if (!newSong.id) {
+        return
+      }
+      if (newSong.id === oldSong.id) {
+        return
+      }
+      if (this.currentLyric) {
+        this.currentLyric.stop()
+        this.currentTime = 0
+        this.playingLyric = ''
+        this.currentLineNum = 0
+      }
+      // clearTimeout(this.timer)
+      // this.timer = setTimeout(() => {
+      //   this.$refs.audio.play()
+      // }, 20)
     },
     playing (newPlaying) {
       if (this.currentUrl) {
@@ -302,8 +366,21 @@ export default {
       }
       .lyric{
         flex: 1;
-        height: 140px;
-        // background-color: #fff;
+        height: 100%;
+        overflow: hidden;
+        text-align: center;
+        .lyric-inner{
+          height: 100%;
+          overflow: hidden;
+        }
+        .text{
+          line-height: 32px;
+          color: #aaa;
+          font-size: $font-size-medium;
+          &.current{
+            color: #fff;
+          }
+        }
       }
       .progress-wrapper{
         display: flex;
