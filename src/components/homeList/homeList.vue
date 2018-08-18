@@ -2,7 +2,7 @@
   <div class="hot-wrapper">
     <h2 class="hot-title">热门歌单推荐</h2>
     <ul>
-      <li class="album-item" v-for="item in albumList" :key="item.id">
+      <li class="album-item" v-for="item in albumList" :key="item.id" @click="selectItem(item.id)">
         <div class="album-pic">
           <img v-lazy="item.picUrl">
         </div>
@@ -21,6 +21,11 @@ export default {
     albumList: {
       type: Array,
       default: null
+    }
+  },
+  methods: {
+    selectItem (id) {
+      this.$emit('select', id)
     }
   }
 }

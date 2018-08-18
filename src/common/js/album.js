@@ -1,5 +1,3 @@
-import {getMusicVkey} from 'api/index.js'
-
 export default class Album {
   constructor (target) {
     this.name = target.topinfo.ListName
@@ -24,12 +22,5 @@ export default class Album {
       songFilter.push(obj)
     }
     return songFilter
-  }
-  getVkey (mid) {
-    getMusicVkey(mid).then(res => {
-      if (!res.code) {
-        return res.data.items[0].vkey
-      }
-    })
   }
 }

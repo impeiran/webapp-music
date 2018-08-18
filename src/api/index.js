@@ -45,6 +45,39 @@ export function getRankData () {
   })
 }
 
+export function getHotAlbum (tid) {
+  const url = '/hot/gethotalbum'
+
+  const data = {
+    g_tk: 5381,
+    uin: 0,
+    format: 'json',
+    inCharset: 'utf-8',
+    outCharset: 'utf-8',
+    notice: 0,
+    platform: 'h5',
+    needNewCode: 1,
+    new_format: 1,
+    pic: 500,
+    disstid: tid,
+    type: 1,
+    json: 1,
+    utf8: 1,
+    onlysong: 0,
+    picmid: 1,
+    nosign: 1,
+    song_begin: 0,
+    // song_num: 15,
+    _: +new Date()
+  }
+
+  return axios.get(url, {
+    params: data
+  }).then(res => {
+    return Promise.resolve(res.data)
+  })
+}
+
 export function getRankAlbum (id) {
   const url = 'chaser/v8/fcg-bin/fcg_v8_toplist_cp.fcg'
 
@@ -61,6 +94,28 @@ export function getRankAlbum (id) {
     page: 'detail',
     type: 'top',
     topid: id,
+    _: +new Date()
+  }
+
+  return axios.get(url, {
+    params: data
+  }).then(res => {
+    return Promise.resolve(res.data)
+  })
+}
+
+export function getHotKey () {
+  const url = 'chaser/splcloud/fcgi-bin/gethotkey.fcg'
+
+  const data = {
+    g_tk: 5381,
+    uin: 0,
+    format: 'json',
+    inCharset: 'utf-8',
+    outCharset: 'utf-8',
+    notice: 0,
+    platform: 'h5',
+    needNewCode: 1,
     _: +new Date()
   }
 
@@ -96,30 +151,6 @@ export function getMusicVkey (mid) {
   }
   return jsonp(url, data, options)
 }
-
-// export function getLyric (mid) {
-//   const url = 'api/lyric/fcgi-bin/fcg_query_lyric_new.fcg'
-//   const name = 'MusicJsonCallback_lrc'
-//   const data = {
-//     pcachetime: +new Date(),
-//     songmid: mid,
-//     g_tk: 1235412784,
-//     jsonpCallback: name,
-//     loginUin: 0,
-//     hostUin: 0,
-//     format: 'json',
-//     inCharset: 'utf8',
-//     outCharset: 'utf-8',
-//     notice: 0,
-//     platform: 'yqq',
-//     needNewCode: 0
-//   }
-//   const options = {
-//     param: 'callback',
-//     name: name
-//   }
-//   return jsonp(url, data, options)
-// }
 
 export function getLyric (mid) {
   const url = 'Tec/music/api/lyric'

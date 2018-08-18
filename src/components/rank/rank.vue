@@ -1,6 +1,6 @@
 <template>
-  <div class="rank">
-    <scroll class="rank-wrapper">
+  <div class="rank" ref="rank">
+    <scroll class="rank-wrapper" ref="myscroll">
       <ul>
         <li class="rank-item" v-for="item in topList" :key="item.id" @click="selectAlbum(item.id)">
           <div class="rank-pic">
@@ -26,8 +26,10 @@
 import {getRankData} from 'api/index.js'
 import scroll from 'components/base/scroll'
 import loading from 'components/base/loading'
+import {playlistMixin} from 'common/js/mixin'
 
 export default {
+  mixins: [playlistMixin],
   components: {
     scroll,
     loading
@@ -52,6 +54,11 @@ export default {
           id: id
         }
       })
+    },
+    handlePlaylist (playlist) {
+      const bottom = playlist.length > 0 ? '60px' : '0'
+      this.$refs.rank.style.bottom = bottom
+      this.$refs.myscroll.refresh()
     }
   },
   mounted () {

@@ -40,7 +40,7 @@
           <i @click="prev" class="iconfont icon-prev"></i>
           <i @click="togglePlaying" class="iconfont" :class="playIcon"></i>
           <i @click="next" class="iconfont icon-next"></i>
-          <i class="iconfont icon-music"></i>
+          <a class="iconfont icon-music" :href="currentUrl" :download="currentSong.name + '.m4a'"></a>
         </div>
       </div>
     </transition>
@@ -105,7 +105,7 @@ export default {
     midLine () {
       const boxHeightHalf = this.$refs.lyricBox.offsetHeight / 2
       const lineHeight = 32
-      return Math.floor(boxHeightHalf / lineHeight)
+      return Math.floor(boxHeightHalf / lineHeight) - 1
     },
     ...mapGetters([
       'fullScreen',
@@ -228,6 +228,19 @@ export default {
   },
   watch: {
     currentSong (newSong, oldSong) {
+      if (!newSong.id) {
+        return
+      }
+      if (newSong.id === oldSong.id) {
+        return
+      }
+      if (this.currentLyric) {
+        this.currentLyric.stop()
+        this.currentTime = 0
+        this.playingLyric = ''
+        this.currentLineNum = 0
+        this.$refs.lyricList.scrollTo(0, 0, 100)
+      }
       getMusicVkey(newSong.mid).then(res => {
         if (!res.code) {
           this.currentUrl = `http://dl.stream.qqmusic.qq.com/C400${newSong.mid}.m4a?guid=5290231985&vkey=${res.data.items[0].vkey}&uin=0&fromtag=38`
@@ -247,18 +260,6 @@ export default {
           })
         }
       })
-      if (!newSong.id) {
-        return
-      }
-      if (newSong.id === oldSong.id) {
-        return
-      }
-      if (this.currentLyric) {
-        this.currentLyric.stop()
-        this.currentTime = 0
-        this.playingLyric = ''
-        this.currentLineNum = 0
-      }
       // clearTimeout(this.timer)
       // this.timer = setTimeout(() => {
       //   this.$refs.audio.play()

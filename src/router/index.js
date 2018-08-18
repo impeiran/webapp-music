@@ -4,6 +4,7 @@ import home from 'components/home/home'
 import rank from 'components/rank/rank'
 import search from 'components/search/search'
 import rankAlbum from 'components/rankAlbum/rankAlbum'
+import hotAlbum from 'components/hotAlbum/hotAlbum'
 
 Vue.use(Router)
 
@@ -31,7 +32,13 @@ export default new Router({
     },
     {
       path: '/home',
-      component: home
+      component: home,
+      children: [
+        {
+          path: '/home/hot',
+          component: hotAlbum
+        }
+      ]
     },
     {
       path: '/rank',

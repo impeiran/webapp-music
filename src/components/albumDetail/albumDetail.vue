@@ -17,9 +17,9 @@
           </div>
         </div>
       </div>
-      <div class="song-list">
+      <div class="song-list" ref="songL">
         <scroll  class="song-scroll" :probe-type="probeType" @scroll="scroll"
-          :listen-scroll="listenScroll">
+          :listen-scroll="listenScroll" ref="myscroll">
           <div>
             <album-song v-for="(item, index) in data.songlist"
                         :key="item.id"
@@ -42,10 +42,12 @@ import loading from 'components/base/loading'
 import albumSong from 'components/base/albumSong'
 import {prefixStyle} from 'common/js/dom.js'
 import {mapGetters, mapActions} from 'vuex'
+import {playlistMixin} from 'common/js/mixin'
 
 const transform = prefixStyle('transform')
 
 export default {
+  mixins: [playlistMixin],
   props: {
     data: {
       type: Object,
@@ -89,6 +91,11 @@ export default {
     test () {
       console.log('test')
     },
+    handlePlaylist (playlist) {
+      const bottom = playlist.length > 0 ? '60px' : '0'
+      this.$refs.songL.style.bottom = bottom
+      this.$refs.myscroll.refresh()
+    },
     ...mapActions([
       'selectPlay'
     ])
@@ -109,6 +116,7 @@ export default {
 
 <style lang="scss" scoped>
 @import 'common/scss/variable.scss';
+@import 'common/scss/mixin.scss';
 .album-detail{
   position: fixed;
   top: 0;
@@ -152,6 +160,8 @@ export default {
       text-align: center;
       .title{
         margin: 20px;
+        padding: 0 50px;
+        box-sizing: border-box;
         height: 18px;
         line-height: 18px;
         font-size: $font-size-large;
@@ -163,7 +173,7 @@ export default {
       }
       .btn{
         width: 140px;
-        margin: 12px auto 19px;
+        margin: 14px auto;
         padding: 4px 10px;
         color: $themeColor;
         border: 1px solid $themeColor;
