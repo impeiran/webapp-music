@@ -64,6 +64,11 @@ export default {
           }
         })
       }
+      if (this.beforeScroll) {
+        this.scroll.on('beforeScrollStart', () => {
+          this.$emit('beforeScroll')
+        })
+      }
 
       if (this.beforeScroll) {
         this.scroll.on('beforeScrollStart', () => {

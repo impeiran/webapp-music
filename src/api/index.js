@@ -126,6 +126,67 @@ export function getHotKey () {
   })
 }
 
+export function search (keyword, page, withSinger, perpage) {
+  const url = '/search'
+
+  const data = {
+    g_tk: 5381,
+    uin: 0,
+    format: 'json',
+    inCharset: 'utf-8',
+    outCharset: 'utf-8',
+    notice: 0,
+    platform: 'h5',
+    needNewCode: 1,
+    w: keyword,
+    zhidaqu: 1,
+    catZhida: withSinger,
+    t: 0,
+    flag: 1,
+    ie: 'utf-8',
+    sem: 1,
+    aggr: 0,
+    perpage,
+    n: perpage,
+    p: page,
+    remoteplace: 'txt.mqq.all',
+    _: +new Date()
+  }
+
+  return axios.get(url, {
+    params: data
+  }).then(res => {
+    return Promise.resolve(res.data)
+  })
+}
+
+export function getSingerData (mid) {
+  const url = 'chaser/v8/fcg-bin/fcg_v8_singer_track_cp.fcg'
+
+  const data = {
+    singermid: mid,
+    g_tk: 5381,
+    uin: 0,
+    format: 'json',
+    inCharset: 'utf-8',
+    outCharset: 'utf-8',
+    notice: 0,
+    platform: 'h5page',
+    needNewCode: 1,
+    order: 'listen',
+    from: 'h5',
+    // num: 15,
+    begin: 0,
+    _: +new Date()
+  }
+
+  return axios.get(url, {
+    params: data
+  }).then(res => {
+    return Promise.resolve(res.data)
+  })
+}
+
 export function getMusicVkey (mid) {
   const url = `chaser/base/fcgi-bin/fcg_music_express_mobile3.fcg`
   const cname = 'MusicJsonCallback' + (Math.random() + '').replace('0.', '')

@@ -11,7 +11,7 @@
             {{data.name}}
           </div>
           <img v-lazy="data.pic">
-          <div class="btn" v-show="data.songlist">
+          <div class="btn" v-show="data.songlist" @click="playAll">
             <i class="iconfont icon-play"></i>
             <span>播放全部</span>
           </div>
@@ -88,8 +88,11 @@ export default {
         index
       })
     },
-    test () {
-      console.log('test')
+    playAll () {
+      this.selectPlay({
+        list: this.data.songlist,
+        index: 0
+      })
     },
     handlePlaylist (playlist) {
       const bottom = playlist.length > 0 ? '60px' : '0'

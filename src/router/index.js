@@ -5,6 +5,7 @@ import rank from 'components/rank/rank'
 import search from 'components/search/search'
 import rankAlbum from 'components/rankAlbum/rankAlbum'
 import hotAlbum from 'components/hotAlbum/hotAlbum'
+import singer from 'components/singer/singer'
 
 Vue.use(Router)
 
@@ -52,7 +53,13 @@ export default new Router({
     },
     {
       path: '/search',
-      component: search
+      component: search,
+      children: [
+        {
+          path: '/singer',
+          component: singer
+        }
+      ]
     }
   ]
 })

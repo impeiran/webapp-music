@@ -19,7 +19,9 @@ export default {
         pagination: {
           el: '.swiper-pagination'
         },
-        loop: true,
+        loop: {
+          loop: true
+        },
         autoplay: {
           autoplay: true,
           delay: 1500,

@@ -240,6 +240,7 @@ export default {
         this.playingLyric = ''
         this.currentLineNum = 0
         this.$refs.lyricList.scrollTo(0, 0, 100)
+        this.currentLyric = null
       }
       getMusicVkey(newSong.mid).then(res => {
         if (!res.code) {
@@ -251,6 +252,7 @@ export default {
               this.$refs.lyricList.refresh()
               if (this.playing) {
                 this.currentLyric.play()
+                this.currentLyric.seek(this.$refs.audio.currentTime * 1000)
               }
             }).catch(() => {
               this.currentLyric = null
@@ -260,10 +262,6 @@ export default {
           })
         }
       })
-      // clearTimeout(this.timer)
-      // this.timer = setTimeout(() => {
-      //   this.$refs.audio.play()
-      // }, 20)
     },
     playing (newPlaying) {
       if (this.currentUrl) {
