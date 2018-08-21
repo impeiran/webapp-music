@@ -1,34 +1,32 @@
 <template>
-  <div>
-    <scroll :data=songsResult
-            ref="myscroll"
-            :pullup="pullup"
-            :beforeScroll="beforeScroll"
-            @scrollToEnd="searchMore"
-            @beforeScroll="listScroll">
-      <ul class="result-list">
-        <li v-if="singerResult.type"
-            @click="selectSinger(singerResult)">
-          <img :src="singerResult.pic">
-          <div class="content">
-            <h1>{{singerResult.singername}}</h1>
-            <span>单曲:{{singerResult.songnum}}</span>
-          </div>
-        </li>
-        <li v-for="(item, index) in songsResult"
-            :key="item.id"
-            @click="selectSong(item, index)">
-          <i class="iconfont icon-music"></i>
-          <div class="content">
-            <span v-html="item.name"></span>
-            <span v-html="item.singer"></span>
-          </div>
-        </li>
-        <loading v-show="hasMore"></loading>
-      </ul>
-      <div class="no-result" v-show="!hasMore && !songsResult.length">暂无搜索结果</div>
-    </scroll>
-  </div>
+  <scroll :data=songsResult
+          ref="myscroll"
+          :pullup="pullup"
+          :beforeScroll="beforeScroll"
+          @scrollToEnd="searchMore"
+          @beforeScroll="listScroll">
+    <ul class="result-list">
+      <li v-if="singerResult.type"
+          @click="selectSinger(singerResult)">
+        <img :src="singerResult.pic">
+        <div class="content">
+          <h1>{{singerResult.singername}}</h1>
+          <span>单曲:{{singerResult.songnum}}</span>
+        </div>
+      </li>
+      <li v-for="(item, index) in songsResult"
+          :key="item.id"
+          @click="selectSong(item, index)">
+        <i class="iconfont icon-music"></i>
+        <div class="content">
+          <span v-html="item.name"></span>
+          <span v-html="item.singer"></span>
+        </div>
+      </li>
+      <loading v-show="hasMore"></loading>
+    </ul>
+    <div class="no-result" v-show="!hasMore && !songsResult.length">暂无搜索结果</div>
+  </scroll>
 </template>
 
 <script>
