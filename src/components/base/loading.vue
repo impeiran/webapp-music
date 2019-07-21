@@ -19,14 +19,14 @@ export default {
 <style lang="scss" scoped>
   @import 'common/scss/variable.scss';
 
-  .loading{
+  .loading {
     width: 100%;
     text-align: center;
-    img{
+    img {
       width: 24px;
       height: 24px;
     }
-    p{
+    p {
       line-height: 20px;
       font-size: $font-size-small;
       color: #aaa;

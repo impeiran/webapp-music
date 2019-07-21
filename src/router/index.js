@@ -1,29 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import home from 'components/home/home'
-import rank from 'components/rank/rank'
-import search from 'components/search/search'
-import rankAlbum from 'components/rankAlbum/rankAlbum'
-import hotAlbum from 'components/hotAlbum/hotAlbum'
-import singer from 'components/singer/singer'
 
 Vue.use(Router)
-
-// const home = (resolve) => {
-//   import('components/home/home').then((module) => {
-//     resolve(module)
-//   })
-// }
-// const rank = (resolve) => {
-//   import('components/rank/rank').then((module) => {
-//     resolve(module)
-//   })
-// }
-// const search = (resolve) => {
-//   import('components/search/search').then((module) => {
-//     resolve(module)
-//   })
-// }
 
 export default new Router({
   routes: [
@@ -33,31 +11,31 @@ export default new Router({
     },
     {
       path: '/home',
-      component: home,
+      component: () => import('components/home/home'),
       children: [
         {
           path: '/home/hot',
-          component: hotAlbum
+          component: () => import('components/hotAlbum/hotAlbum')
         }
       ]
     },
     {
       path: '/rank',
-      component: rank,
+      component: () => import('components/rank/rank'),
       children: [
         {
           path: '/rank/detail',
-          component: rankAlbum
+          component: () => import('components/rankAlbum/rankAlbum')
         }
       ]
     },
     {
       path: '/search',
-      component: search,
+      component: () => import('components/search/search'),
       children: [
         {
           path: '/singer',
-          component: singer
+          component: () => import('components/singer/singer')
         }
       ]
     }

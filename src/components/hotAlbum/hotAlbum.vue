@@ -11,14 +11,13 @@ export default {
   components: {
     albumDetail
   },
+
   data () {
     return {
       hot: {}
     }
   },
-  mounted () {
-    this._getHotAlbum()
-  },
+
   methods: {
     _getHotAlbum () {
       let tid = parseInt(this.$route.query.id)
@@ -27,6 +26,10 @@ export default {
         console.log(this.hot)
       })
     }
+  },
+
+  mounted () {
+    this._getHotAlbum()
   }
 }
 </script>

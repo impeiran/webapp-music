@@ -44,9 +44,11 @@ export default {
     clearSearchText () {
       this.text = ''
     },
+
     blur () {
       this.$refs.searchInput.blur()
     },
+
     _getHotKey () {
       getHotKey().then(res => {
         if (!res.code) {
@@ -54,15 +56,18 @@ export default {
         }
       })
     },
+
     addQuery (text) {
       this.text = text
     },
+
     handlePlaylist (playlist) {
       const bottom = playlist.length > 0 ? '60px' : '0'
       this.$refs.myresult.style.bottom = bottom
       this.$refs.myscroll.refresh()
     }
   },
+
   created () {
     this._getHotKey()
   }

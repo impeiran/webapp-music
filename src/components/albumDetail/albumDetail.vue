@@ -40,8 +40,8 @@
 import scroll from 'components/base/scroll'
 import loading from 'components/base/loading'
 import albumSong from 'components/base/albumSong'
-import {prefixStyle} from 'common/js/dom.js'
-import {mapGetters, mapActions} from 'vuex'
+import { prefixStyle } from 'common/js/dom'
+import { mapActions } from 'vuex'
 import {playlistMixin} from 'common/js/mixin'
 
 const transform = prefixStyle('transform')
@@ -65,10 +65,7 @@ export default {
   components: {
     scroll,
     loading,
-    albumSong,
-    ...mapGetters([
-      'playlist'
-    ])
+    albumSong
   },
   computed: {
     bgPic () {

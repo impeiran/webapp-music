@@ -15,7 +15,7 @@
         </div>
       </li>
       <li v-for="(item, index) in songsResult"
-          :key="item.id"
+          :key="index"
           @click="selectSong(item, index)">
         <i class="iconfont icon-music"></i>
         <div class="content">
@@ -41,10 +41,18 @@ const perpage = 20
 const withSinger = 1
 
 export default {
+  props: {
+    query: {
+      type: String,
+      default: ''
+    }
+  },
+
   components: {
     scroll,
     loading
   },
+
   data () {
     return {
       page: 1,
@@ -56,13 +64,12 @@ export default {
       beforeScroll: true
     }
   },
-  props: {
-    query: {
-      type: String,
-      default: ''
-    }
-  },
+
   computed: {
+    ...mapGetters([
+      'playlist'
+    ]),
+
     singerPic () {
       if (this.singerResult.singermid) {
         return `https://y.gtimg.cn/music/photo_new/T001R68x68M000${this.singerResult.singermid}.jpg?max_age=2592000`
@@ -71,10 +78,7 @@ export default {
       } else {
         return ''
       }
-    },
-    ...mapGetters([
-      'playlist'
-    ])
+    }
   },
   methods: {
     refresh () {
@@ -94,22 +98,17 @@ export default {
         if (!res.code) {
           this._normalizeResult(res.data)
           this._checkMore(res.data.song)
-          // console.log(this.singerResult)
-          // console.log(this.songsResult)
         }
       })
     },
     searchMore () {
-      if (!this.hasMore) {
-        return
-      }
+      if (!this.hasMore) return
       this.page++
       search(this.query, this.page, withSinger, perpage).then(res => {
         if (!res.code) {
           let newResult = new Result(res.data)
           this.songsResult = this.songsResult.concat(newResult.songlist)
           this._checkMore(res.data.song)
-          // console.log(this.singerResult)
         }
       })
     },
@@ -147,6 +146,7 @@ export default {
       'selectPlay'
     ])
   },
+
   created () {
     this.$watch('query', debounce(newQuery => {
       this._search(newQuery)

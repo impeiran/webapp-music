@@ -23,7 +23,7 @@ export default {
     },
     bounceTime: {
       type: Number,
-      default: 550
+      default: 500
     },
     data: {
       type: Array,
@@ -101,7 +101,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-
-</style>
