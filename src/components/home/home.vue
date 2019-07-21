@@ -41,7 +41,6 @@ export default {
         if (!res.code) {
           this.slider = res.data.slider
           this.songList = res.data.songList
-          console.log(this.songList)
         }
       })
     },

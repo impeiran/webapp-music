@@ -1,5 +1,7 @@
 <template>
   <div class="player" v-show="playlist.length > 0">
+
+    <!-- 全屏播放器 -->
     <transition name="normal">
       <div class="normal" v-show="fullScreen">
         <div class="bg-box">
@@ -44,6 +46,8 @@
         </div>
       </div>
     </transition>
+
+    <!-- 迷你播放器 -->
     <transition name="mini">
       <div class="mini" v-show="!fullScreen" @click="up">
         <img :src="currentSong.pic" :class="picRt">
@@ -58,6 +62,8 @@
         </div>
      </div>
     </transition>
+
+    <!-- 音频element -->
     <audio ref="audio" :src="currentUrl"
           @canplay="ready"
           @error="error"
@@ -67,7 +73,7 @@
 </template>
 
 <script>
-import {getMusicVkey, getLyric} from 'api/index.js'
+import {getMusicVkey, getLyric, genMusicUrl} from 'api/index.js'
 import {mapGetters, mapMutations} from 'vuex'
 import progressBar from 'components/base/progressBar'
 import scroll from 'components/base/scroll'
@@ -117,12 +123,27 @@ export default {
     ])
   },
   methods: {
+    fixAudioInMobile () {
+      const $body = document.body
+      const handler = e => {
+        this.$nextTick(() => {
+          e.stopPropagation()
+          this.$refs.audio.load()
+          $body.removeEventListener('touchstart', handler)
+        })
+      }
+
+      $body.addEventListener('touchstart', handler)
+    },
+
     down () {
       this.setFullScreen(false)
     },
+
     up () {
       this.setFullScreen(true)
     },
+
     prev () {
       if (!this.songReady) {
         return
@@ -137,6 +158,7 @@ export default {
       }
       this.songReady = false
     },
+
     next () {
       if (!this.songReady) {
         return
@@ -151,6 +173,7 @@ export default {
       }
       this.songReady = false
     },
+
     loop () {
       this.$refs.audio.currentTime = 0
       this.$refs.audio.play()
@@ -159,6 +182,7 @@ export default {
         this.currentLyric.seek(0)
       }
     },
+
     end () {
       if (this.mode === 1) {
         this.loop()
@@ -166,6 +190,7 @@ export default {
         this.next()
       }
     },
+
     handleLyric ({ lineNum, txt }) {
       this.currentLineNum = lineNum
       if (lineNum > this.midLine) {
@@ -176,22 +201,27 @@ export default {
       }
       this.playingLyric = txt
     },
+
     togglePlaying () {
       this.setPlayingState(!this.playing)
       if (this.currentLyric) {
         this.currentLyric.togglePlay()
       }
     },
+
     togglePlayMode () {
       const mode = (this.mode + 1) % 2
       this.setPlayMode(mode)
     },
+
     ready () {
       this.songReady = true
     },
+
     error () {
       this.songReady = true
     },
+
     _pad (num, n = 2) {
       let len = num.toString().length
       while (len < n) {
@@ -200,15 +230,18 @@ export default {
       }
       return num
     },
+
     format (interval) {
       interval = interval | 0
       const minute = interval / 60 | 0
       const second = this._pad(interval % 60)
       return `${minute}:${second}`
     },
+
     updateTime (e) {
       this.currentTime = e.target.currentTime
     },
+
     onPercentChange (percent) {
       const currentTime = this.currentSong.duration * percent
       this.$refs.audio.currentTime = currentTime
@@ -219,6 +252,7 @@ export default {
         this.currentLyric.seek(currentTime * 1000)
       }
     },
+
     ...mapMutations({
       setFullScreen: 'SET_FULL_SCREEN',
       setPlayingState: 'SET_PLAYING_STATE',
@@ -226,43 +260,45 @@ export default {
       setPlayMode: 'SET_PLAY_MODE'
     })
   },
+
   watch: {
-    currentSong (newSong, oldSong) {
-      if (!newSong.id) {
-        return
-      }
-      if (newSong.id === oldSong.id) {
-        return
-      }
+    async currentSong (newSong, oldSong) {
+      if (!newSong.id || newSong.id === oldSong.id) return
+
+      const $lyricList = this.$refs.lyricList
+      const $audio = this.$refs.audio
+
       if (this.currentLyric) {
         this.currentLyric.stop()
         this.currentTime = 0
         this.playingLyric = ''
         this.currentLineNum = 0
-        this.$refs.lyricList.scrollTo(0, 0, 100)
         this.currentLyric = null
+        $lyricList.scrollTo(0, 0, 100)
       }
-      getMusicVkey(newSong.mid).then(res => {
-        if (!res.code) {
-          this.currentUrl = `http://dl.stream.qqmusic.qq.com/C400${newSong.mid}.m4a?guid=5290231985&vkey=${res.data.items[0].vkey}&uin=0&fromtag=38`
-          this.$nextTick(() => {
-            this.$refs.audio.play()
-            getLyric(newSong.mid).then(res => {
-              this.currentLyric = new Lyric(gobase64(res.lyric), this.handleLyric)
-              this.$refs.lyricList.refresh()
-              if (this.playing) {
-                this.currentLyric.play()
-                this.currentLyric.seek(this.$refs.audio.currentTime * 1000)
-              }
-            }).catch(() => {
-              this.currentLyric = null
-              this.playingLyric = ''
-              this.currentLineNum = 0
-            })
+
+      const vkeyResponse = await getMusicVkey(newSong.mid)
+
+      if (!vkeyResponse.code) {
+        this.currentUrl = genMusicUrl(newSong.mid, vkeyResponse.data.items[0].vkey)
+        this.$nextTick(() => {
+          $audio.play()
+          getLyric(newSong.mid).then(res => {
+            this.currentLyric = new Lyric(gobase64(res.lyric), this.handleLyric)
+            $lyricList.refresh()
+            if (this.playing) {
+              this.currentLyric.play()
+              this.currentLyric.seek($audio.currentTime * 1000)
+            }
+          }).catch(() => {
+            this.currentLyric = null
+            this.playingLyric = ''
+            this.currentLineNum = 0
           })
-        }
-      })
+        })
+      }
     },
+
     playing (newPlaying) {
       if (this.currentUrl) {
         this.$nextTick(() => {
@@ -271,14 +307,10 @@ export default {
         })
       }
     }
-    // currentUrl (newUrl) {
-    //   console.log(newUrl)
-    //   if (newUrl && this.songReady && this.playing) {
-    //     this.$nextTick(() => {
-    //       this.$refs.audio.play()
-    //     })
-    //   }
-    // }
+  },
+
+  mounted () {
+    this.fixAudioInMobile()
   }
 }
 </script>
@@ -322,7 +354,7 @@ export default {
         color: $themeColor;
         z-index: 580;
         .iconfont{
-        font-size: 24px;
+          font-size: 24px;
         }
       }
       .top{
@@ -493,10 +525,10 @@ export default {
 
   @keyframes rotate {
     0%{
-      transform: rotate(0)
+      transform: rotate(0);
     }
     100%{
-      transform: rotate(360deg)
+      transform: rotate(360deg);
     }
   }
 </style>

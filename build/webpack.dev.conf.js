@@ -29,7 +29,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
   // these devServer options should be customized in /config/index.js
   devServer: {
     before(app) {
-      app.get('/hot/gethotalbum', (req, res) => {
+      app.get(/^\/chasermusic_gethotalbum/, (req, res) => {
         const url = 'https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg'
         axios.get(url, {
           headers: {
@@ -43,7 +43,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
           console.log(e)
         })
       })
-      app.get('/search', (req, res) => {
+      app.get(/^\/chasermusic_search/, (req, res) => {
         const url = 'https://c.y.qq.com/soso/fcgi-bin/search_for_qq_cp'
         axios.get(url, {
           headers: {

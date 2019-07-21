@@ -22,7 +22,6 @@ export default {
       getRankAlbum(id).then(res => {
         if (!res.code) {
           this.album = new Album(res)
-          console.log(this.album)
         }
       })
     }

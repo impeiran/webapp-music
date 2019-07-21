@@ -1,7 +1,7 @@
 <template>
   <div class="hs-wrapper">
-    <swiper :options="swiperOption" ref="mySwiper">
-      <swiper-slide v-for="item in slider" :key="item.id" ref="mySwiper">
+    <swiper :options="swiperOption" ref="mySwiper" v-if="slider.length">
+      <swiper-slide v-for="item in slider" :key="item.id">
         <a :href="item.linkUrl">
           <img :src="item.picUrl" alt="">
         </a>
@@ -13,39 +13,41 @@
 
 <script>
 export default {
-  data () {
-    return {
-      swiperOption: {
-        pagination: {
-          el: '.swiper-pagination'
-        },
-        loop: {
-          loop: true
-        },
-        autoplay: {
-          autoplay: true,
-          delay: 1500,
-          disableOnInteraction: false
-        }
-      }
-    }
-  },
   props: {
     slider: {
       type: Array,
       default: null
     }
   },
-  computed: {
-    swiper () {
-      return this.$refs.mySwiper.swiper
+
+  data () {
+    return {
+      swiperOption: {
+        pagination: {
+          el: '.swiper-pagination'
+        },
+        autoplay: {
+          autoplay: true,
+          delay: 1500,
+          disableOnInteraction: false
+        },
+        loop: true
+      }
     }
   },
+
   activated () {
-    this.swiper.autoplay.start()
+    if (!this.$refs.mySwiper) return
+    this.$nextTick(() => {
+      this.$refs.mySwiper.swiper.autoplay.start()
+    })
   },
+
   deactivated () {
-    this.swiper.autoplay.stop()
+    if (!this.$refs.mySwiper) return
+    this.$nextTick(() => {
+      this.$refs.mySwiper.swiper.autoplay.stop()
+    })
   }
 }
 </script>

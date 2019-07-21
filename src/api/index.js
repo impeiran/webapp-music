@@ -1,8 +1,9 @@
 import axios from 'axios'
 import jsonp from './config'
 
+// 获取主页数据
 export function getHomeData () {
-  const url = 'chaser/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg'
+  const url = '/chasermusic/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg'
 
   const data = {
     g_tk: 5381,
@@ -23,8 +24,9 @@ export function getHomeData () {
   })
 }
 
+// 获取排名数据
 export function getRankData () {
-  const url = 'chaser/v8/fcg-bin/fcg_myqq_toplist.fcg'
+  const url = '/chasermusic/v8/fcg-bin/fcg_myqq_toplist.fcg'
 
   const data = {
     g_tk: 5381,
@@ -45,8 +47,9 @@ export function getRankData () {
   })
 }
 
+// 获取热门专辑
 export function getHotAlbum (tid) {
-  const url = '/hot/gethotalbum'
+  const url = '/chasermusic_gethotalbum/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg'
 
   const data = {
     g_tk: 5381,
@@ -78,8 +81,9 @@ export function getHotAlbum (tid) {
   })
 }
 
+// 获取排名专辑
 export function getRankAlbum (id) {
-  const url = 'chaser/v8/fcg-bin/fcg_v8_toplist_cp.fcg'
+  const url = '/chasermusic/v8/fcg-bin/fcg_v8_toplist_cp.fcg'
 
   const data = {
     g_tk: 5381,
@@ -104,8 +108,9 @@ export function getRankAlbum (id) {
   })
 }
 
+// 获取热门搜索词
 export function getHotKey () {
-  const url = 'chaser/splcloud/fcgi-bin/gethotkey.fcg'
+  const url = '/chasermusic/splcloud/fcgi-bin/gethotkey.fcg'
 
   const data = {
     g_tk: 5381,
@@ -126,8 +131,9 @@ export function getHotKey () {
   })
 }
 
+// 搜索
 export function search (keyword, page, withSinger, perpage) {
-  const url = '/search'
+  const url = '/chasermusic_search/soso/fcgi-bin/search_for_qq_cp'
 
   const data = {
     g_tk: 5381,
@@ -160,8 +166,9 @@ export function search (keyword, page, withSinger, perpage) {
   })
 }
 
+// 获取歌手数据
 export function getSingerData (mid) {
-  const url = 'chaser/v8/fcg-bin/fcg_v8_singer_track_cp.fcg'
+  const url = '/chasermusic/v8/fcg-bin/fcg_v8_singer_track_cp.fcg'
 
   const data = {
     singermid: mid,
@@ -187,8 +194,9 @@ export function getSingerData (mid) {
   })
 }
 
+// 获取vkey （调用歌曲必备key）
 export function getMusicVkey (mid) {
-  const url = `chaser/base/fcgi-bin/fcg_music_express_mobile3.fcg`
+  const url = `/chasermusic/base/fcgi-bin/fcg_music_express_mobile3.fcg`
   const cname = 'MusicJsonCallback' + (Math.random() + '').replace('0.', '')
   const data = {
     g_tk: 1235412784,
@@ -213,8 +221,9 @@ export function getMusicVkey (mid) {
   return jsonp(url, data, options)
 }
 
+// 获取歌词
 export function getLyric (mid) {
-  const url = 'Tec/music/api/lyric'
+  const url = '/chasertec/music/api/lyric'
 
   const data = {
     songmid: mid,
@@ -234,4 +243,8 @@ export function getLyric (mid) {
   }).then((res) => {
     return Promise.resolve(res.data)
   })
+}
+
+export function genMusicUrl (mid, vkey) {
+  return `http://dl.stream.qqmusic.qq.com/C400${mid}.m4a?guid=5290231985&vkey=${vkey}&uin=0&fromtag=38`
 }

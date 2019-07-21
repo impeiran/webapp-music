@@ -16,7 +16,7 @@ export default function jsonp (url, data, option) {
 
 export function param (data) {
   let query = ''
-  for (var k in data) {
+  for (let k in data) {
     let value = data[k] !== undefined ? data[k] : ''
     query += '&' + k + '=' + encodeURIComponent(value)
   }
