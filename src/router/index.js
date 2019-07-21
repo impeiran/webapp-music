@@ -1,5 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import home from 'components/home/home'
+import rank from 'components/rank/rank'
+import search from 'components/search/search'
+import rankAlbum from 'components/rankAlbum/rankAlbum'
+import hotAlbum from 'components/hotAlbum/hotAlbum'
+import singer from 'components/singer/singer'
 
 Vue.use(Router)
 
@@ -11,31 +17,31 @@ export default new Router({
     },
     {
       path: '/home',
-      component: () => import('components/home/home'),
+      component: home,
       children: [
         {
           path: '/home/hot',
-          component: () => import('components/hotAlbum/hotAlbum')
+          component: hotAlbum
         }
       ]
     },
     {
       path: '/rank',
-      component: () => import('components/rank/rank'),
+      component: rank,
       children: [
         {
           path: '/rank/detail',
-          component: () => import('components/rankAlbum/rankAlbum')
+          component: rankAlbum
         }
       ]
     },
     {
       path: '/search',
-      component: () => import('components/search/search'),
+      component: search,
       children: [
         {
           path: '/singer',
-          component: () => import('components/singer/singer')
+          component: singer
         }
       ]
     }

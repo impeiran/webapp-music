@@ -18,8 +18,10 @@
         </div>
       </div>
       <div class="song-list" ref="songL">
-        <scroll  class="song-scroll" :probe-type="probeType" @scroll="scroll"
-          :listen-scroll="listenScroll" ref="myscroll">
+        <scroll class="song-scroll"
+          ref="myscroll"
+          :probe-type="probeType"
+          @scroll="scroll">
           <div>
             <album-song v-for="(item, index) in data.songlist"
                         :key="item.id"
