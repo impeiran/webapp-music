@@ -43,13 +43,14 @@ export default {
   },
   methods: {
     _initScroll () {
-      if (!this.$refs.wrapper) return
+      if (!this.$refs.wrapper) {
+        return
+      }
       this.scroll = new Bscroll(this.$refs.wrapper, {
         probeType: this.probeType,
         click: this.click,
         bounceTime: this.bounceTime
       })
-
       if (this.listenScroll) {
         let self = this
         this.scroll.on('scroll', pos => {
