@@ -12,11 +12,11 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/chasermusic': {
-        target: 'https://c.y.qq.com/',
+        target: 'http://music.impeiran.com/',
         changeOrigin: true,
-        pathRewrite: {
-          '^/chasermusic': '/'
-        }
+        // pathRewrite: {
+        //   '^/chasermusic': '/'
+        // }
       },
       '/chasertec': {
         target: 'http://ustbhuangyi.com/',

@@ -10,7 +10,7 @@
           <div class="title">
             {{data.name}}
           </div>
-          <img v-lazy="data.pic">
+          <img v-lazy="data.pic || ''">
           <div class="btn" v-show="data.songlist" @click="playAll">
             <i class="iconfont icon-play"></i>
             <span>播放全部</span>
@@ -18,8 +18,12 @@
         </div>
       </div>
       <div class="song-list" ref="songL">
-        <scroll  class="song-scroll" :probe-type="probeType" @scroll="scroll"
-          :listen-scroll="listenScroll" ref="myscroll">
+        <scroll
+          class="song-scroll"
+          ref="myscroll"
+          :probe-type="probeType"
+          :listen-scroll="listenScroll"
+           @scroll="scroll">
           <div>
             <album-song v-for="(item, index) in data.songlist"
                         :key="item.id"
