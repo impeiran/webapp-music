@@ -30,7 +30,7 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 
 qrcode:
 
-![preview](http://img.impeiran.com/music_qrcode.png)
+![preview](./qrcode.png)
 
 ### Introduction
 
