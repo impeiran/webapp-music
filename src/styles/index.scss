@@ -1,0 +1,14 @@
+body {
+  margin: 0;
+  width: 100vw;
+  overflow-x: auto;
+  color: #323233;
+  font-size: 16px;
+  font-family: PingFang SC, 'Helvetica Neue', Arial, sans-serif;
+  background-color: #f7f8fa;
+  -webkit-font-smoothing: antialiased;
+}
+
+body, section, aside, div, ul, ol, li, header, footer, main {
+  box-sizing: border-box;
+}
