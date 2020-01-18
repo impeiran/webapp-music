@@ -9,6 +9,14 @@ module.exports = {
   },
 
   devServer: {
-    port: 9998
+    port: 9998,
+
+    proxy: {
+      '/cgi-bin': {
+        target: 'https://u.y.qq.com',
+        changeOrigin: true,
+        secure: false
+      }
+    }
   }
 }
