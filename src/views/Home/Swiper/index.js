@@ -4,6 +4,7 @@ import './style.scss'
 
 export default {
   props: {
+    title: { type: String, default: '' },
     value: { type: Array, default: () => [] }
   },
 
@@ -16,26 +17,31 @@ export default {
   },
 
   render() {
-    const { value, genImgStyle } = this
+    const { title, value, genImgStyle } = this
 
-    return (<Swipe show-indicators={false} autoplay={3000} loop>
-      {
-        value.map(item => {
-          return (
-            <SwipeItem>
-              <div class='home-swipe-item'>
-                <div class='banner-image' style={genImgStyle(item.cover)}>
-                  <div class='pic-name'>
-                    <Image height='50' width='50' src={item.miscellany.icon} round />
-                    <span>{ item.title }</span>
+    return (
+      <div class='home-swiper'>
+        <h3>{ title }</h3>
+        <Swipe width={250} show-indicators={false} autoplay={3000} loop>
+          {
+            value.map(item => {
+              return (
+                <SwipeItem key={item.id}>
+                  <div class='home-swipe-item'>
+                    <div class='banner-image' style={genImgStyle(item.cover)}>
+                      <div class='pic-name'>
+                        <Image height='30' width='30' src={item.miscellany.icon} round />
+                        <span>{ item.title }</span>
+                      </div>
+                    </div>
+                    <div class='subtitle'>{ item.subtitle }</div>
                   </div>
-                </div>
-                <div class='subtitle'>{ item.subtitle }</div>
-              </div>
-            </SwipeItem>
-          )
-        })
-      }
-    </Swipe>)
+                </SwipeItem>
+              )
+            })
+          }
+        </Swipe>
+      </div>
+    )
   }
 }

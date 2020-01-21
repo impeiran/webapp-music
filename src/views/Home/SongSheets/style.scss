@@ -1,0 +1,30 @@
+@import '@/styles/mixin.scss';
+
+.home-songsheet {
+  padding: 0 10px;
+
+  .sheet-card-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+
+    .sheet-card {
+      margin: 0 3% 15px 0;
+      padding-bottom: 8px;
+      width: 30%;
+      font-size: 12px;
+      border-radius: 10px;
+      background: #fff;
+      overflow: hidden;
+      @include boxShadowBlack;
+
+      .play-count, .title {
+        display: flex;
+        align-items: center;
+        padding: 0 6px;
+        // font-weight: bold;
+      }
+    }
+  }
+
+  
+}
