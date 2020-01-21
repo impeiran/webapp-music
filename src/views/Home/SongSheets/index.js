@@ -30,7 +30,7 @@ export default {
                 </div>
                 <div class='play-count'>
                   <Icon name='play-circle-o' />
-                  { `${(sheet.cnt / 10000).toFixed(1)}万` }
+                  { this.$_playCount(sheet.cnt) }
                 </div>
                 <div class='title'>{ sheet.title }</div>
               </div>

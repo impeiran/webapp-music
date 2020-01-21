@@ -7,25 +7,13 @@
     "outCharset": "utf-8",
     "notice": 0,
     "platform": "h5",
-    "needNewCode": 1
+    "needNewCode": 1,
+    "ct": 23,
+    "cv": 0
   },
-  "MusicHallHomePage": {
-    "module": "music.musicHall.MusicHallPlatform",
-    "method": "MobileWebHome",
-    "param": {
-      "ShelfId": [
-        101,
-        102,
-        161
-      ]
-    }
-  },
-  "hotkey": {
-    "module": "tencent_musicsoso_hotkey.HotkeyService",
-    "method": "GetHotkeyForQQMusicMobile",
-    "param": {
-      "remoteplace": "txt.miniapp.wxada7aab80ba27074",
-      "searchid": "1559616839293"
-    }
+  "topList": {
+    "module": "musicToplist.ToplistInfoServer",
+    "method": "GetAll",
+    "param": {}
   }
 }
