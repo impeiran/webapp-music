@@ -54,7 +54,9 @@ export default {
         {/* search bar */}
         { !this.hideSearchBar && <SearchBar />}
         
-        <router-view></router-view>
+        <keep-alive>
+          <router-view></router-view>
+        </keep-alive>
 
         {/* nav bar  */}
         { !this.hideNavBottom && <NavFooter />}

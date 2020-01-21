@@ -11,14 +11,20 @@ const routes = [
     component: Layout,
     children: [
       {
-        meta: { title: '首页' },
+        meta: { 
+          title: '首页',
+          cached: true
+        },
         path: 'home',
         name: 'home',
         component: () => import('@/views/Home/index.js')
       },
 
       {
-        meta: { title: '排行榜' },
+        meta: { 
+          title: '排行榜',
+          cached: true
+        },
         path: 'rank',
         name: 'rank',
         component: () => import('@/views/Rank/index.js')
@@ -42,6 +48,10 @@ const routes = [
     component: Layout,
     children: [
       {
+        meta: {
+          title: '歌手',
+          cached: true
+        },
         path: 'list',
         name: 'singerList',
         component: () => import('@/views/Singer/index.js')

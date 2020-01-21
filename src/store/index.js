@@ -10,6 +10,10 @@ export default new Vuex.Store({
   },
 
   getters: {
+    songSheets (state) {
+      return state.home.songSheets
+    },
+
     hotKeys (state) {
       return state.home.hotKeys
     }

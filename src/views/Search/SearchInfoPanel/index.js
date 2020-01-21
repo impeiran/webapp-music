@@ -2,7 +2,7 @@ import { isEmpty } from 'lodash'
 import { Popup, Divider, Button } from 'vant'
 import { mapGetters } from 'vuex'
 
-import './index.scss'
+import './style.scss'
 
 export default {
   components: {

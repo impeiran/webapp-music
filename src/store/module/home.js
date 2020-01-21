@@ -1,6 +1,6 @@
+import ure from 'ure'
 import { getHomePage } from '@/service/home'
 import feedback from '@/utils/feedback'
-import { get } from 'lodash'
 
 const { errAlert } = feedback
 
@@ -30,13 +30,13 @@ export default {
       return getHomePage().then(res => {
         let { MusicHallHomePage, hotkey } = res
         if (hotkey.code == 0) {
-          commit(SET_HOT_KEYS, get(hotkey, 'data.vec_hotkey' || []))
+          commit(SET_HOT_KEYS, ure.getValue(hotkey, 'data.vec_hotkey' || []))
         } else {
           errAlert('加载热搜失败')
         }
 
         if (MusicHallHomePage.code == 0) {
-          commit(SET_SONG_SHEETS, get(MusicHallHomePage, 'data.v_shelf') || [])
+          commit(SET_SONG_SHEETS, ure.getValue(MusicHallHomePage, 'data.v_shelf') || [])
         } else {
           errAlert('加载首页失败')
         }

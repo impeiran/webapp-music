@@ -1,0 +1,34 @@
+.home-swipe-item {
+  padding: 8px;
+
+  .banner-image {
+    position: relative;
+    padding-bottom: 56%;
+    width: 100%;
+    height: 0;
+    box-sizing: content-box;
+    background-size: cover;
+    border-radius: 10px;
+    overflow: hidden;
+
+    .pic-name {
+      display: flex;
+      align-items: center;
+      position: absolute;
+      left: 3%;
+      bottom: 3%;
+      color: #fff;
+
+      span {
+        display: inline-block;
+        margin: 0 15px;
+        font-weight: bold;
+      }
+    }
+  }
+
+  .subtitle {
+    margin: 4px 10px;
+    font-weight: bold;
+  }
+}

@@ -1,6 +1,6 @@
 import { Search } from 'vant'
 
-import './index.scss'
+import './style.scss'
 
 export default {
   components: {
