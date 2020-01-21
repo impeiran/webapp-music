@@ -8110,6 +8110,11 @@ upper-case@^1.1.1:
   resolved "https://registry.npm.taobao.org/upper-case/download/upper-case-1.1.3.tgz#f6b4501c2ec4cdd26ba78be7222961de77621598"
   integrity sha1-9rRQHC7EzdJrp4vnIilh3ndiFZg=
 
+ure@^0.1.0-beta.2:
+  version "0.1.0-beta.2"
+  resolved "https://registry.npm.taobao.org/ure/download/ure-0.1.0-beta.2.tgz#8f4a7aef0822834231eb8addd94f72a367b3f921"
+  integrity sha1-j0p67wgig0Ix64rd2U9yo2ez+SE=
+
 uri-js@^4.2.2:
   version "4.2.2"
   resolved "https://registry.npm.taobao.org/uri-js/download/uri-js-4.2.2.tgz#94c540e1ff772956e2299507c010aea6c8838eb0"

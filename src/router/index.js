@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Layout from '@/components/Base/Layout'
+import Layout from '@/layout/Base'
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -10,15 +11,27 @@ const routes = [
     component: Layout,
     children: [
       {
+        meta: { title: '首页' },
         path: 'home',
         name: 'home',
         component: () => import('@/views/Home/index.js')
       },
 
       {
+        meta: { title: '排行榜' },
         path: 'rank',
         name: 'rank',
         component: () => import('@/views/Rank/index.js')
+      },
+
+      {
+        meta: { 
+          title: '搜索' ,
+          hideSearchBar: true
+        },
+        path: 'search',
+        name: 'search',
+        component: () => import('@/views/Search/index.js')
       }
     ]
   },
