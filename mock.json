@@ -1,19 +1,18 @@
 {
   "comm": {
-    "g_tk": 5381,
-    "uin": "",
-    "format": "json",
-    "inCharset": "utf-8",
-    "outCharset": "utf-8",
-    "notice": 0,
-    "platform": "h5",
-    "needNewCode": 1,
-    "ct": 23,
+    "ct": 24,
     "cv": 0
   },
-  "topList": {
-    "module": "musicToplist.ToplistInfoServer",
-    "method": "GetAll",
-    "param": {}
+  "singerList": {
+    "module": "Music.SingerListServer",
+    "method": "get_singer_list",
+    "param": {
+      "area": -100,
+      "sex": 0,
+      "genre": 6,
+      "index": 2,
+      "sin": 0,
+      "cur_page": 1
+    }
   }
 }

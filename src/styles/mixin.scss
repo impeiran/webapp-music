@@ -1,3 +1,7 @@
 @mixin boxShadowBlack {
   box-shadow: 0 8px 12px #ebedf0;
 }
+
+@mixin smoothScroll {
+  -webkit-overflow-scrolling: touch;
+}

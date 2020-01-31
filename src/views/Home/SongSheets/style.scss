@@ -8,7 +8,7 @@
     flex-wrap: wrap;
 
     .sheet-card {
-      margin: 0 3% 15px 0;
+      margin: 0 calc(3% + 6px) 15px 0;
       padding-bottom: 8px;
       width: 30%;
       font-size: 12px;
@@ -16,6 +16,10 @@
       background: #fff;
       overflow: hidden;
       @include boxShadowBlack;
+
+      &:nth-child(3n+3) {
+        margin-right: 0;
+      }
 
       .play-count, .title {
         display: flex;

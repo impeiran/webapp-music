@@ -22,7 +22,7 @@ export default {
     return (
       <div class='home-swiper'>
         <h3>{ title }</h3>
-        <Swipe width={250} show-indicators={false} autoplay={3000} loop>
+        <Swipe width={250} show-indicators={false} autoplay={3000}>
           {
             value.map(item => {
               return (

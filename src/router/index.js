@@ -50,7 +50,8 @@ const routes = [
       {
         meta: {
           title: '歌手',
-          cached: true
+          cached: true,
+          hideSearchBar: true
         },
         path: 'list',
         name: 'singerList',
