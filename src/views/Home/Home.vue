@@ -7,7 +7,7 @@ import feedback from '@/utils/feedback'
 import { mapGetters } from 'vuex'
 
 export default {
-  name: 'Home',
+  name: 'home',
 
   components: {
     Swiper,

@@ -4,6 +4,8 @@ import ListSheet from '@/components/ListSheet/ListSheet'
 import { getSongSheetInfo } from '@/service/song-sheet'
 
 export default {
+  name: 'songSheet',
+
   components: {
     ListSheet
   },

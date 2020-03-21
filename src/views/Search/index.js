@@ -2,6 +2,8 @@ import SearchInfoPanel from '@/views/Search/SearchInfoPanel'
 import { Field, CellGroup } from 'vant'
 
 export default {
+  name: 'search',
+
   components: {
     SearchInfoPanel, Field, CellGroup
   },

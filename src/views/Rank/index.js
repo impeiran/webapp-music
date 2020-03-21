@@ -5,6 +5,7 @@ import { Icon } from 'vant'
 import './style.scss'
 
 export default {
+  name: 'rank',
 
   data () {
     return {

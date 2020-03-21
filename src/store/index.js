@@ -5,8 +5,12 @@ import home from './module/home'
 
 Vue.use(Vuex)
 
-export default new Vuex.Store({
+export const ADD_CACHE_ROUTE = 'ADD_CACHE_ROUTE'
+export const REMOVE_CACHE_ROUTE = 'REMOVE_CACHE_ROUTE'
+
+const store = new Vuex.Store({
   state: {
+    cacheRoutes: []
   },
 
   getters: {
@@ -20,12 +24,36 @@ export default new Vuex.Store({
   },
 
   mutations: {
-  },
+    [ADD_CACHE_ROUTE] ({ cacheRoutes }, name) {
+      cacheRoutes.indexOf(name) == -1 &&
+      cacheRoutes.push(name)
+    },
 
-  actions: {
+    [REMOVE_CACHE_ROUTE] ({ cacheRoutes }, name) {
+      const index = cacheRoutes.indexOf(name)
+      index !== -1 && cacheRoutes.splice(index, 1)
+    }
   },
 
   modules: {
     home
   }
 })
+
+/**
+ * 收集需要缓存的组件
+ * @param {Array} routes 
+ */
+export const collectCacheRoutes = routes => {
+  routes.forEach(routeItem => {
+    const { name, meta, children } = routeItem
+
+    if (name && meta && meta.cached) {
+      store.commit(ADD_CACHE_ROUTE, name)
+    }
+
+    children && collectCacheRoutes(children)
+  })
+}
+
+export default store

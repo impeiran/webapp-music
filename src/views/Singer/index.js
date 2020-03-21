@@ -4,6 +4,7 @@ import { Sidebar, SidebarItem, List, Cell, DropdownMenu, DropdownItem } from 'va
 import './style.scss'
 
 export default {
+  name: 'singerList',
 
   data () {
     return {

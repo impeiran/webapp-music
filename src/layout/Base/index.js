@@ -1,5 +1,6 @@
 import NavFooter from '@/components/NavFooter/NavFooter'
 import SearchBar from '@/components/SearchBar/SearchBar'
+import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -15,6 +16,8 @@ export default {
   },
 
   computed: {
+    ...mapState(['cacheRoutes']),
+
     layoutStyle () {
       const defaultStyle = {
         minHeight: '100vh'
@@ -41,10 +44,11 @@ export default {
       this.hideSearchBar = meta && meta.hasOwnProperty('hideSearchBar')
         ? meta.hideSearchBar
         : false
-    }
-  },
-
-  mounted() {
+      
+      this.hideNavBottom = meta && meta.hasOwnProperty('hideNavBottom')
+        ? meta.hideNavBottom
+        : false
+    },
   },
 
   render () {
@@ -54,7 +58,7 @@ export default {
         {/* search bar */}
         { !this.hideSearchBar && <SearchBar />}
         
-        <keep-alive>
+        <keep-alive include={this.cacheRoutes}>
           <router-view></router-view>
         </keep-alive>
 

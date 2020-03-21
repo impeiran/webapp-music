@@ -89,5 +89,5 @@ export const getSingerList = (option = {}) => {
  * @param {String} mid 
  */
 export const getSinger = mid => {
-
+  console.log(mid)
 }

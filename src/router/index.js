@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import { collectCacheRoutes } from '@/store'
 import Layout from '@/layout/Base'
 
 Vue.use(VueRouter)
@@ -38,42 +39,48 @@ const routes = [
         path: 'search',
         name: 'search',
         component: () => import('@/views/Search/index.js')
-      }
-    ]
-  },
+      },
 
-  {
-    path: '/singer',
-    redirect: '/singer/list',
-    component: Layout,
-    children: [
+      {
+        meta: { 
+          title: '专辑' ,
+          hideSearchBar: true
+        },
+        path: '/album/:id',
+        name: 'album',
+        component: () => import('@/views/Album/Album.vue')
+      },
+
+      {
+        meta: { 
+          title: '歌单' ,
+          hideSearchBar: true
+        },
+        path: '/song_sheet/:id',
+        name: 'songSheetPage',
+        component: () => import('@/views/SongSheet/SongSheet.vue')
+      },
+
+      {
+        path: '/singer',
+        redirect: '/singer/list',
+      },
+
       {
         meta: {
           title: '歌手',
           cached: true,
           hideSearchBar: true
         },
-        path: 'list',
+        path: '/singer/list',
         name: 'singerList',
         component: () => import('@/views/Singer/index.js')
       }
     ]
   },
-
-  {
-    path: '/album/:id',
-    name: 'album',
-    meta: { title: '专辑' },
-    component: () => import('@/views/Album/Album.vue')
-  },
-
-  {
-    path: '/song_sheet/:id',
-    name: 'songSheetPage',
-    meta: { title: '歌单' },
-    component: () => import('@/views/SongSheet/SongSheet.vue')
-  },
 ]
+
+collectCacheRoutes(routes)
 
 const router = new VueRouter({
   mode: 'history',

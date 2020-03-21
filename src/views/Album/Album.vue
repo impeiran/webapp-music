@@ -4,6 +4,8 @@ import ListSheet from '@/components/ListSheet/ListSheet'
 import { getRank } from '@/service/rank'
 
 export default {
+  name: 'album',
+
   components: {
     ListSheet
   },
