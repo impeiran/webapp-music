@@ -1,5 +1,5 @@
-import NavFooter from '@/components/NavFooter'
-import SearchBar from '@/components/SearchBar'
+import NavFooter from '@/components/NavFooter/NavFooter'
+import SearchBar from '@/components/SearchBar/SearchBar'
 
 export default {
   components: {

@@ -1,3 +1,4 @@
+<script>
 import { Tabbar, TabbarItem } from 'vant'
 
 export default {
@@ -14,25 +15,18 @@ export default {
         { title: '歌手', name: 'singer', icon: 'friends-o', to: '/singer/list' }
       ]
     }
-  },
-
-  render() {
-    const { navList } = this
-
-    return (
-      <Tabbar vModel={this.activeNav} route>
-      {
-        navList.map(nav => {
-          return (
-            <TabbarItem
-              name={nav.name}
-              icon={nav.icon}
-              to={nav.to}
-            >{ nav.title }</TabbarItem>
-          )
-        })
-      }
-      </Tabbar>
-    )
   }
 }
+</script>
+
+<template>
+  <tabbar v-model="activeNav" route>
+    <tabbar-item 
+      v-for="item in navList"
+      :key="item.name"
+      :name="item.name"
+      :icon="item.icon"
+      :to="item.to"
+    >{{ item.title }}</tabbar-item>
+  </tabbar>
+</template>

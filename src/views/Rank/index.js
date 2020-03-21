@@ -15,7 +15,6 @@ export default {
   mounted () {
     getRankList().then(res => {
       this.list = res
-      console.log(this.list)
     }).catch(() => feedback._errAlert('获取排行榜列表失败'))
   },
 

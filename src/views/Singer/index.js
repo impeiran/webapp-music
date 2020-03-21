@@ -53,7 +53,6 @@ export default {
     initData () {
       getSingerTags().then(res => {
         this.tagList = res || {}
-        console.log(res)
         this.$nextTick(() => {
           this.getList()
         })
