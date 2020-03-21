@@ -21,7 +21,7 @@ export default {
 </script>
 
 <template>
-  <div class="search-bar">
+  <div class="search-bar box-shadow-border">
     <Search 
       v-model="this.query"
       placeholder="请输入关键字"
@@ -39,7 +39,6 @@ export default {
   left: 0;
   right: 0;
   background: #fff;
-  box-shadow: 3px 3px 8px rgba($color: #000000, $alpha: 0.1);
   z-index: 1000;
 }
 </style>

@@ -12,3 +12,15 @@ body {
 body, section, aside, div, ul, ol, li, header, footer, main {
   box-sizing: border-box;
 }
+
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 0;
+}
+
+.box-shadow-border {
+  box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+.box-shadow-block {
+  box-shadow: 0 7px 13px rgba(0, 0, 0, 0.21);
+}

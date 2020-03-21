@@ -61,11 +61,11 @@ export const getSingerTags = () => {
  * 获取歌手列表
  * @param {Object} option 
  * {
- *  area     区域ID
- *  genre    分类ID
- *  sex      性别ID
- *  index    首字母ID
- *  cur_page 当前页
+ *   area     区域ID
+ *   genre    分类ID
+ *   sex      性别ID
+ *   index    首字母ID
+ *   cur_page 当前页
  * }
  */
 export const getSingerList = (option = {}) => {
@@ -82,4 +82,12 @@ export const getSingerList = (option = {}) => {
       return Promise.reject(res)
     }
   })
+}
+
+/**
+ * 获取歌手信息
+ * @param {String} mid 
+ */
+export const getSinger = mid => {
+
 }

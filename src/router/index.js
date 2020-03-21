@@ -17,7 +17,7 @@ const routes = [
         },
         path: 'home',
         name: 'home',
-        component: () => import('@/views/Home/index.js')
+        component: () => import('@/views/Home/Home')
       },
 
       {
@@ -58,7 +58,21 @@ const routes = [
         component: () => import('@/views/Singer/index.js')
       }
     ]
-  }
+  },
+
+  {
+    path: '/album/:id',
+    name: 'album',
+    meta: { title: '专辑' },
+    component: () => import('@/views/Album/Album.vue')
+  },
+
+  {
+    path: '/song_sheet/:id',
+    name: 'songSheetPage',
+    meta: { title: '歌单' },
+    component: () => import('@/views/SongSheet/SongSheet.vue')
+  },
 ]
 
 const router = new VueRouter({
