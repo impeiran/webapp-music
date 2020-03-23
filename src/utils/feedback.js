@@ -7,7 +7,7 @@ const handleMsg = msg => {
   return msg
 }
 
-export default {
+const feedback = {
   /**
    * 错误弹窗
    * @param {Object || String} msg 
@@ -52,3 +52,7 @@ export default {
     })
   }
 }
+
+export const feedbackMixin = { methods: feedback }
+
+export default feedback

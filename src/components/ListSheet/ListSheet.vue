@@ -26,17 +26,25 @@ export default {
   },
 
   mounted () {
-    window.addEventListener('scroll', this.handleScroll)
-  },
-
-  beforeDestroy () {
-    window.removeEventListener('scroll', this.handleScroll)
+    this.initScroller()
   },
 
   methods: {
-    handleScroll () {
-      this.showBanner = document.documentElement.scrollTop > 250
-    } 
+    initScroller () {
+      const handleScroll = () => {
+        this.showBanner = document.documentElement.scrollTop > 250
+      }
+      window.addEventListener('scroll', handleScroll)
+      this.$once('hook:beforeDestroy', () => {
+        window.removeEventListener('scroll', handleScroll)
+      })
+    },
+
+    genVisibleStyle (flag) {
+      return {
+        visibility: flag ? 'visible' : 'hidden'
+      }
+    }
   }
 }
 </script>
@@ -54,8 +62,8 @@ export default {
 
       <div class="description">
         <h3>{{ name || ' ' }}</h3>
-        <div class="info-item">播放量：{{ listenNum }}次</div>
         <div class="info-item">歌曲数：{{ total }}首</div>
+        <div class="info-item" :style="genVisibleStyle(listenNum)">播放量：{{ listenNum }}次</div>
         <Button 
           class="play-button"
           type="info" 
@@ -74,7 +82,7 @@ export default {
         <div class="banner">
           <vant-image :src="pic" width="30" height="30" radius="4" />
           <span class="name">{{ name }}</span>
-          <span class="info-item">播放量：{{ listenNum }}次</span>
+          <span class="info-item">歌曲数：{{ total }}首</span>
         </div>
       </popup>
     </div>
@@ -99,6 +107,7 @@ export default {
 
   .info-item {
     color: #aaa;
+    min-height: 14px;
   }
 
   .description {
@@ -109,6 +118,7 @@ export default {
     }
 
     .play-button {
+      margin: 10px 0 0 0;
       padding: 4px 15px;
       line-height: 14px;
       font-weight: bold;

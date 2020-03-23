@@ -1,6 +1,8 @@
 import Axios from 'axios'
 import ure from 'ure'
 
+import singerSongListAdapter from '@/adapter/singer-song-list'
+
 const genRandomNum = len => {
   let ret = ''
   while (len-- > -1) {
@@ -85,9 +87,34 @@ export const getSingerList = (option = {}) => {
 }
 
 /**
- * 获取歌手信息
+ * 获取歌手歌曲信息
  * @param {String} mid 
  */
-export const getSinger = mid => {
-  console.log(mid)
+export const getSingerSongList = (mid, page = 1, pageSize = 50) => {
+  const begin = (page - 1) * pageSize
+
+  const url = '/cgi-bin/musicu.fcg'
+
+  const params = {
+    '-': 'getSingerSong' + genRandomNum(16),
+    g_tk: 1742179805,
+    hostUin: 0,
+    format: 'json',
+    inCharset: 'utf8',
+    outCharset: 'utf-8',
+    notice: 0,
+    platform: 'yqq.json',
+    needNewCode: 0,
+    data: `{"comm":{"ct":24,"cv":0},"singerSongList":{"method":"GetSingerSongList","param":{"order":1,"singerMid":"${mid}","begin":${begin},"num":${pageSize}},"module":"musichall.song_list_server"}}`
+  }
+
+  return Axios.get(url, { params }).then(res => {
+    res = res.data
+    if (
+      res.code != 0 ||
+      res.singerSongList?.code != 0
+    ) return Promise.reject(res)
+
+    return singerSongListAdapter(res.singerSongList.data || {})
+  }).catch(err => Promise.reject(err))
 }

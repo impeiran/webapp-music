@@ -1,4 +1,8 @@
-export default (value) => {
+/**
+ * 过滤首页歌单字段
+ * @param {Object} value 首页歌单
+ */
+const homeSheetAdapter = (value) => {
   return {
     tid: value.tid,
     title: value.title,
@@ -6,3 +10,5 @@ export default (value) => {
     playNum: value.access_num
   }
 }
+
+export default homeSheetAdapter

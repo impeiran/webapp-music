@@ -36,8 +36,7 @@ module.exports = {
           },
           params: req.query
         }).then(response => {
-          response = response.data
-          res.json(response)
+          res.json(response.data)
         }).catch(() => {
           res.json({
             code: 1,

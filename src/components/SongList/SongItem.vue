@@ -22,8 +22,8 @@ export default {
       <span v-else>{{ index }}</span>
     </div>
     <div class="right-part">
-      <span class="title">{{ data.songName }}</span>
-      <span class="singer">{{ data.singer }}</span>
+      <span class="title van-ellipsis">{{ data.songName }}</span>
+      <span class="singer van-ellipsis">{{ data.singer }}</span>
     </div>
   </div>
 </template>
@@ -54,6 +54,7 @@ export default {
 
   .right-part {
     margin-left: 10px;
+    overflow: hidden;
 
     span {
       display: block;

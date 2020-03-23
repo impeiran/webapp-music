@@ -68,13 +68,23 @@ const routes = [
 
       {
         meta: {
-          title: '歌手',
+          title: '歌手列表',
           cached: true,
           hideSearchBar: true
         },
         path: '/singer/list',
         name: 'singerList',
-        component: () => import('@/views/Singer/index.js')
+        component: () => import('@/views/Singer/SingerList')
+      },
+
+      {
+        meta: {
+          title: '歌手',
+          hideSearchBar: true
+        },
+        path: '/singer/:mid',
+        name: 'singer',
+        component: () => import('@/views/Singer/Singer')
       }
     ]
   },
