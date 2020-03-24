@@ -44,6 +44,24 @@ module.exports = {
           })
         })
       })
+
+      app.get(/\/soso\//, (req, res) => {
+        const target = 'https://c.y.qq.com'
+        axios.get(target + req.path, {
+          headers: {
+            referer: 'https://y.qq.com/m/index.html',
+            host: 'y.qq.com'
+          },
+          params: req.query
+        }).then(response => {
+          res.json(response.data)
+        }).catch(() => {
+          res.json({
+            code: 1,
+            msg: '开发环境获取数据失败'
+          })
+        })
+      })
     }
   }
 }

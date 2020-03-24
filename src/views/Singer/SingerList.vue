@@ -92,9 +92,10 @@ export default {
       this.paginationInfoLoad()
     },
 
-    paginationInfoAction (page) {
+    paginationInfoAction (page, pageSize) {
       return getSingerList({
         ...this.option,
+        sin: (page - 1) * pageSize,
         cur_page: page
       })
     },
@@ -195,8 +196,7 @@ export default {
       position: fixed;
       top: 0;
       width: calc(100vw - 70px);
-      z-index: 10;
-      overflow: hidden;
+      z-index: 9999;
     }
 
     .content {

@@ -4,12 +4,12 @@
  */
 const songItemAdapter = (data) => {
   return {
-    songId: data.songId || data.id,
+    songId: data.songId || data.songid || data.id,
     songMid: data.songmid || data.mid,
     songName: data.songname || data.name || data.title,
     singer: (data.singer || []).map(item => item.name).join('/'),
     albumId: data.albumid,
-    albumMid: data.albumMid,
+    albumMid: data.albummid || data.albumMid,
     albumName: data.albumname,
     interval: data.interval
   }

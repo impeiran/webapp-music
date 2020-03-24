@@ -17,7 +17,7 @@ export default {
   <div class="song-list-normal">
     <song-item 
       v-for="(item, index) in list"
-      :key="item.songId"
+      :key="item.index"
       :index="index + 1"
       :data="item"
       :icon="useIcon"

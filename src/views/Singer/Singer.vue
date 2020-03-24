@@ -39,8 +39,6 @@ export default {
     this.mid = mid
     this.name = name
     this.pic = getSingerAvatar(this.mid)
-
-    // this.paginationInfoLoad()
   },
 
   methods: {

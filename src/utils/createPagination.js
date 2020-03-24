@@ -21,7 +21,7 @@ const defaultOption = {
  * }
  */
 const createPagination = option => {
-  Object.assign(option, defaultOption)
+  option = Object.assign({}, defaultOption, option)
 
   const {
     namespace,

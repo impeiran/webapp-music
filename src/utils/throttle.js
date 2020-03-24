@@ -1,7 +1,7 @@
 export default (fn, interval) => {
   let pending = false
   
-  return (...args) => {
+  return function (...args) {
     if (pending) return
     pending = true
     fn(...args)

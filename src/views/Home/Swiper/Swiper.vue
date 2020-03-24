@@ -32,7 +32,7 @@ export default {
 
     <Swipe :width="250" :show-indicators="false" :autoplay="3000">
       <SwipeItem v-for="item in value" :key="item.id" @click="visit(item)">
-        <div class="home-swipe-item">
+        <div class="home-swipe-item box-shadow-border">
           <div class="banner-image" :style="genImgStyle(item.cover)">
             <div class="pic-name">
               <vant-image height="30" width="30" :src="item.miscellany.icon" round />

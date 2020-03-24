@@ -38,7 +38,7 @@ const routes = [
         },
         path: 'search',
         name: 'search',
-        component: () => import('@/views/Search/index.js')
+        component: () => import('@/views/Search/Search')
       },
 
       {

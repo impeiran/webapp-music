@@ -14,7 +14,12 @@ export default {
 
   methods: {
     goSearch () {
-      this.$router.push({ name: 'search' })
+      this.$router.push({ 
+        name: 'search',
+        params: {
+          showCancel: true
+        }
+      })
     }
   }
 }

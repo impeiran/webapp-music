@@ -25,7 +25,7 @@
     "@vue/cli-plugin-eslint": "^4.1.0",
     "@vue/cli-plugin-router": "^4.1.2",
     "@vue/cli-plugin-vuex": "^4.1.2",
-    "@vue/cli-service": "^4.1.0",
+    "@vue/cli-service": "^4.2.3",
     "babel-eslint": "^10.0.3",
     "babel-plugin-import": "^1.13.0",
     "eslint": "^5.16.0",
@@ -45,7 +45,8 @@
     ],
     "rules": {
       "no-console": 0,
-      "no-empty": 0
+      "no-empty": 0,
+      "vue/no-parsing-error": 0
     },
     "parserOptions": {
       "parser": "babel-eslint"
