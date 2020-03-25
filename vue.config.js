@@ -4,6 +4,10 @@ const axios = require('axios')
 const resolve = dir => path.join(__dirname, dir)
 
 module.exports = {
+  publicPath: process.env.NODE_ENV !== 'production' ? '' : '/music',
+
+  productionSourceMap: false,
+
   chainWebpack: config => {
     config.resolve.alias
       .set('@$', resolve('src'))
@@ -20,6 +24,12 @@ module.exports = {
       },
 
       '/v8/fcg-bin': {
+        target: 'https://c.y.qq.com',
+        changeOrigin: true,
+        secure: false
+      },
+
+      '/base': {
         target: 'https://c.y.qq.com',
         changeOrigin: true,
         secure: false

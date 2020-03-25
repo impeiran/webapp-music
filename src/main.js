@@ -4,6 +4,8 @@ import store from './store'
 import router from './router'
 import { Lazyload } from 'vant'
 
+import './init'
+
 import '@/utils/filter'
 
 import '@/styles/vant-rewrite.scss'

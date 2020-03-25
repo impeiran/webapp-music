@@ -1,5 +1,6 @@
 <script>
 import SongItem from './SongItem'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -9,6 +10,19 @@ export default {
   props: {
     list: { type: Array, required: true },
     useIcon: { type: Boolean, default: false }
+  },
+
+  computed: {
+    ...mapGetters('player', ['currentPlaySong'])
+  },
+
+  methods: {
+    select (index) {
+      this.$emit('select', {
+        index,
+        list: this.list
+      })
+    }
   }
 }
 </script>
@@ -21,6 +35,8 @@ export default {
       :index="index + 1"
       :data="item"
       :icon="useIcon"
+      :active="currentPlaySong.songMid === item.songMid"
+      @click.native="select(index)"
     />
   </div>
 </template>

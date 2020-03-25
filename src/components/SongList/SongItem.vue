@@ -16,7 +16,7 @@ export default {
 </script>
 
 <template>
-  <div class="song-item">
+  <div class="song-item" :class="{ active }">
     <div class="left-part" :class="{ popular: !icon && index < 4 }">
       <Icon v-if="icon" name="music-o" size="24px" color="#aaa" />
       <span v-else>{{ index }}</span>
@@ -35,6 +35,7 @@ export default {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
+  transition: all .3s;
 
   .left-part {
     display: flex;

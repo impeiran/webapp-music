@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import home from './module/home'
+import player from './module/player'
 
 Vue.use(Vuex)
 
@@ -36,7 +37,8 @@ const store = new Vuex.Store({
   },
 
   modules: {
-    home
+    home,
+    player
   }
 })
 

@@ -32,7 +32,7 @@ export default {
       placeholder="请输入关键字"
       shape="round"
       readonly
-      @click="this.goSearch"
+      @click="goSearch"
     />
   </div>
 </template>

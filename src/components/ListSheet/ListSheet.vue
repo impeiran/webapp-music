@@ -1,6 +1,7 @@
 <script>
 import SongList from '@/components/SongList/NormalList'
 import { Popup, Image, Button } from 'vant'
+import { mapActions } from 'vuex'
 
 export default {
   components: {
@@ -30,9 +31,13 @@ export default {
   },
 
   methods: {
+    ...mapActions('player', [
+      'playSong'
+    ]),
+
     initScroller () {
       const handleScroll = () => {
-        this.showBanner = document.documentElement.scrollTop > 250
+        this.showBanner = (document.documentElement.scrollTop || document.body.scrollTop) > 250
       }
       window.addEventListener('scroll', handleScroll)
       this.$once('hook:beforeDestroy', () => {
@@ -44,6 +49,10 @@ export default {
       return {
         visibility: flag ? 'visible' : 'hidden'
       }
+    },
+
+    selectSong (data) {
+      this.playSong(data)
     }
   }
 }
@@ -88,7 +97,7 @@ export default {
     </div>
 
     <div :style="{ padding: '10px 0' }">
-      <song-list :list="list" />
+      <song-list :list="list" @select="selectSong" />
     </div>
 
   </div>
