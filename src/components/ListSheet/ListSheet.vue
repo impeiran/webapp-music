@@ -1,6 +1,6 @@
 <script>
 import SongList from '@/components/SongList/NormalList'
-import { Popup, Image, Button } from 'vant'
+import { Popup, Image, Button, ImagePreview } from 'vant'
 import { mapActions } from 'vuex'
 
 export default {
@@ -53,6 +53,10 @@ export default {
 
     selectSong (data) {
       this.playSong(data)
+    },
+
+    previewAvatar (src) {
+      ImagePreview([src])
     }
   }
 }
@@ -67,6 +71,7 @@ export default {
         width="120"
         height="120"
         radius="10"
+        @click="previewAvatar(pic)"
       />
 
       <div class="description">

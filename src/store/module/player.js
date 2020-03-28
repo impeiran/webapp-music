@@ -1,4 +1,5 @@
-import { getVkey, getSongUrl } from '@/service/base'
+import { Base64 } from 'js-base64'
+import { getVkey, getSongUrl, getLyric } from '@/service/base'
 
 export const SET_PLAY_URL = 'SET_PLAY_URL'
 export const SET_PLAYING = 'SET_PLAYING'
@@ -74,6 +75,13 @@ export default {
       return getVkey(mid).then(vkey => {
         if (!vkey) return Promise.reject('该歌曲由于版权问题无法在网页提供播放')
         return getSongUrl(mid, vkey)
+      }).catch(err => Promise.reject(err))
+    },
+
+    // eslint-disable-next-line no-unused-vars
+    getSongLyric ({ commit }, mid) {
+      return getLyric(mid).then(lyric => {
+        return Base64.decode(lyric)
       }).catch(err => Promise.reject(err))
     }
   }

@@ -1,18 +1,26 @@
 <script>
+import ure from 'ure'
+import Lyric from 'lyric-parser'
+import feedback from '@/utils/feedback'
 import ControlArea from './ControlArea'
+import LyricLine from './LyricLine'
+import Scroller from '@/components/Scroller/Scroller'
 import { Image, Slider, Icon } from 'vant'
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 import { SET_FULLPAGE, SET_CURRENT_PLAY_INDEX, SET_PLAYING } from '@/store/module/player'
 import { transDuration, getRandom } from '@/utils'
-import feedback from '@/utils/feedback'
-import ure from 'ure'
+import { getLyric } from '@/service/base'
+
+const LYRIC_LINE_HEIGHT = 25
 
 export default {
   components: {
     VantImage: Image,
     Slider,
     Icon,
-    ControlArea
+    Scroller,
+    ControlArea,
+    LyricLine
   },
 
   data () {
@@ -23,7 +31,10 @@ export default {
       progress: 0,
 
       songReady: false,
-      songUrl: ''
+      songUrl: '',
+
+      lyric: { lines: [] },
+      lyricActiveLine: -1
     }
   },
 
@@ -43,6 +54,17 @@ export default {
 
     totalDuration () {
       return transDuration(this.currentPlaySong.interval || 0)
+    },
+
+    scrollerHeight () {
+      return this.$refs.scroller
+        ? this.$refs.scroller.$el.offsetHeight
+        : -1
+    },
+
+    midLyricLine () {
+      if (this.scrollerHeight === -1) return 100
+      return Math.floor((this.scrollerHeight / 2) / 25) - 1
     }
   },
 
@@ -55,16 +77,30 @@ export default {
   },
 
   watch: {
-    async currentPlaySong (newSong) {
+    // 监测歌曲变化
+    async currentPlaySong (newSong, prevSong) {
+      if (newSong.songMid === prevSong.songMid) return
+
       this.SET_PLAYING(false)
       this.resetState()
 
+      // 请求歌曲URL
       this.getSongUrl(newSong.songMid).then(url => {
         this.songUrl = url
         this.SET_PLAYING(true)
       }).catch(err => feedback._errAlert(err))
+
+      // 请求歌曲歌词
+      this.getSongLyric(newSong.songMid).then(res => {
+        this.lyric = new Lyric(res, this.handleLyric)
+        if (this.playing) {
+          this.lyric.seek(this.$refs.audio.currentTime * 1000 || 0)
+          this.lyric.play()
+        }
+      }).catch(err => feedback._errAlert(err))
     },
 
+    // 监测播放状态
     playing (status) {
       this.$nextTick(() => {
         if (status) {
@@ -75,6 +111,7 @@ export default {
           }
         } else {
           this.$refs.audio.pause()
+          this.lyric.stop()
         }
       })
     }
@@ -91,14 +128,14 @@ export default {
       SET_CURRENT_PLAY_INDEX
     ]),
 
-    ...mapActions('player', ['getSongUrl']),
+    ...mapActions('player', ['getSongUrl', 'getSongLyric']),
 
     fixAudioInMobile () {
       const $body = document.body
       const handler = e => {
         this.$nextTick(() => {
           e.stopPropagation()
-          this.$refs.audio.load()
+          this.$refs.audio && this.$refs.audio.load()
           $body.removeEventListener('touchstart', handler)
         })
       }
@@ -121,24 +158,28 @@ export default {
       }
     },
 
+    // 上一首
     prev () {
       this.changeSong((currentPlayIndex, length) => {
         return (currentPlayIndex + length - 1) % length
       })
     },
 
+    // 下一首
     next () {
       this.changeSong((currentPlayIndex, length) => {
         return (currentPlayIndex + 1) % length
       })
     },
 
+    // 拉动进度条
     handleDragSliderEnd: ure.debounce(function () {
       this.lockProgress = false
       this.currentPlayTime = this.currentPlaySong.interval * (this.progress / 100)
       this.$refs.audio.currentTime = this.currentPlayTime
     }, 100),
 
+    // 事实更新播放进度
     handleAudioTime (e) {
       this.currentPlayTime = e.target.currentTime
       if (!this.lockProgress) {
@@ -146,11 +187,33 @@ export default {
       }
     },
 
+    handleLyric ({ lineNum }) {
+      const scroller = this.$refs.scroller.$el
+
+      if (lineNum > this.midLyricLine) {
+        const distance = scroller.childNodes[lineNum - this.midLyricLine]
+          .offsetHeight || 25
+        scroller.scrollTo({
+          top: scroller.scrollTop + distance,
+          behavior: 'smooth'
+        })
+      } else {
+        scroller.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        })
+      }
+      this.lyricActiveLine = lineNum
+    },
+
     resetState () {
+      // 歌曲状态归零
       this.songReady = false
       this.progress = 0
       this.songUrl = ''
       this.currentPlayTime = 0
+
+      // 停止音频
       this.$refs.audio.pause()
       this.$refs.audio.currentTime = 0
     }
@@ -174,15 +237,21 @@ export default {
         :src="currentPlaySong.pic"
         :class="playing ? 'play' : 'pause'"
         class="song-pic"
-        width="250px"
-        height="250px"
+        width="200px"
+        height="200px"
         round
       />
     </div>
 
-    <div class="lyric-wrapper">
-
-    </div>
+    <Scroller class="lyric-wrapper" ref="scroller">
+      <lyric-line 
+        v-for="(item, index) in lyric.lines"
+        ref="lyricWord"
+        :key="index"
+        :content="item.txt"
+        :active="lyricActiveLine === index"
+      />
+    </Scroller>
 
     <div class="progress-wrapper">
       <span>{{ currentDuration }}</span>
@@ -202,6 +271,7 @@ export default {
     <audio 
       ref="audio"
       :src="songUrl"
+      @canplay="songReady = true"
       @timeupdate="handleAudioTime"
       @ended="next"
     ></audio>

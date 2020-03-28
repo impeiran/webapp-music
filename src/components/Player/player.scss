@@ -53,9 +53,11 @@
 
     .song-pic {
       border: 10px solid hsla(0,0%,100%,.1);
+      animation-fill-mode: both;
+      animation: rotate 20s linear infinite;
 
       &.play{
-        animation: rotate 20s linear infinite;
+        animation-play-state: running;
       }
       &.pause{
         animation-play-state: paused;
