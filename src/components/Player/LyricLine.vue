@@ -20,7 +20,7 @@ p {
   margin: 0 10px;
   line-height: 25px;
   text-align: center;
-  color: #aaa;
+  color: #ccc;
 
   &.active {
     color: #fff;
