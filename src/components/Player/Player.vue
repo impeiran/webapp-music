@@ -87,6 +87,7 @@ export default {
     async currentPlaySong (newSong, prevSong) {
       if (newSong.songMid === prevSong.songMid) return
 
+      this.addHistorySong(newSong)
       this.SET_PLAYING(false)
       this.resetState()
 
@@ -101,7 +102,6 @@ export default {
         this.lyric = new Lyric(res, this.handleLyric)
         this.lyric.seek(this.$refs.audio.currentTime * 1000 || 0)
         this.lyric.play()
-        console.log(this.lyric)
       }).catch(err => feedback._errAlert(err))
     },
 
@@ -134,7 +134,11 @@ export default {
       SET_CURRENT_PLAY_INDEX
     ]),
 
-    ...mapActions('player', ['getSongUrl', 'getSongLyric']),
+    ...mapActions('player', [
+      'getSongUrl', 
+      'getSongLyric',
+      'addHistorySong'
+    ]),
 
     fixAudioInMobile () {
       const $body = document.body
@@ -187,7 +191,7 @@ export default {
       this.lockProgress = false
       this.currentPlayTime = this.currentPlaySong.interval * (this.progress / 100)
       this.$refs.audio.currentTime = this.currentPlayTime
-      // this.lyric.seek(this.currentPlayTime * 1000)
+      this.lyric.seek(this.currentPlayTime * 1000)
     }, 100),
 
     // 实时更新播放进度

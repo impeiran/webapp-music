@@ -10,8 +10,16 @@ export default {
     data: { type: Object, default: () => {} },
     active: { type: Boolean, default: false },
     index: { type: Number, default: 0 },
-    icon: { type: Boolean, default: false }
+    icon: { type: Boolean, default: false },
+    rightIcon: { type: String, default: 'cross' },
+    showRightIcon: { type: Boolean, default: false }
   },
+
+  methods: {
+    clickCorner () {
+      this.$emit('click-right-icon')
+    }
+  }
 }
 </script>
 
@@ -24,6 +32,9 @@ export default {
     <div class="right-part">
       <span class="title van-ellipsis">{{ data.songName }}</span>
       <span class="singer van-ellipsis">{{ data.singer }}</span>
+    </div>
+    <div class="corner-icon" v-if="showRightIcon" @click.stop="clickCorner">
+      <Icon :name="rightIcon"></Icon>
     </div>
   </div>
 </template>
@@ -56,6 +67,7 @@ export default {
   .right-part {
     margin-left: 10px;
     overflow: hidden;
+    flex: 1;
 
     span {
       display: block;
@@ -69,6 +81,11 @@ export default {
         color: #aaa;
       }
     }
+  }
+
+  .corner-icon {
+    margin: 0 15px;
+    color: #aaa;
   }
 }
 </style>

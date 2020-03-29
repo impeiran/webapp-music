@@ -31,12 +31,14 @@ export default {
   <div class="song-list-normal">
     <song-item 
       v-for="(item, index) in list"
+      v-bind="$attrs"
       :key="item.index"
       :index="index + 1"
       :data="item"
       :icon="useIcon"
       :active="currentPlaySong.songMid === item.songMid"
       @click.native="select(index)"
+      @click-right-icon="$emit('click-right-icon', item)"
     />
   </div>
 </template>
