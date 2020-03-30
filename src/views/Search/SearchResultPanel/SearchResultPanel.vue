@@ -3,13 +3,13 @@ import ure from 'ure'
 import SongList from '@/components/SongList/NormalList'
 import SingerResult from './SingerResult'
 import { getSingerAvatar } from '@/service/base'
-import { Popup, List, Loading } from 'vant'
+import { List, ActionSheet, Loading } from 'vant'
 
 export default {
   components: {
     SongList,
+    ActionSheet,
     SingerResult,
-    Popup,
     Loading,
     List
   },
@@ -40,16 +40,24 @@ export default {
   methods: {
     updateLoading (value) {
       this.$emit('update:loading', value)
+    },
+
+    viewSinger () {
+      this.$router.push({
+        name: 'singer',
+        params: { mid: this.singerInfo.singerMid },
+        query: { name: this.singerInfo.singerName }
+      })
     }
   }
 }
 </script>
 
 <template>
-  <Popup
+  <action-sheet
     :value="$attrs.value"
     class="popup-result box-shadow-border"
-    position="bottom"
+    title="搜索结果"
     round
     @input="$listeners.input"
   >
@@ -68,6 +76,7 @@ export default {
           :pic="singerPic"
           :name="singerInfo.singerName"
           :song-num="singerInfo.songNum"
+          @click.native="viewSinger"
         />
         <song-list :list="list" useIcon></song-list>
       </List>
@@ -79,11 +88,18 @@ export default {
         vertical
       >加载中...</Loading>
     </div>
-  </Popup>
+  </action-sheet>
 </template>
 
 <style lang="scss" scoped>
+@import '@/styles/mixin.scss';
 .popup-result {
-  padding: 20px 10px;
+  padding: 0px 10px 20px;
+}
+
+.list-container {
+  overflow-y: auto;
+  overflow-x: hidden;
+  @include smoothScroll;
 }
 </style>
