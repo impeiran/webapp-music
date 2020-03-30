@@ -69,12 +69,6 @@ export default {
         : -1
     },
 
-    scollerOffetTop () {
-      return this.$refs.scroller
-        ? this.$refs.scroller.$el.offsetTop
-        : -1
-    },
-
     midLyricLine () {
       if (this.scrollerHeight === -1) return 100
       return Math.floor((this.scrollerHeight / 2) / 25)
@@ -211,9 +205,10 @@ export default {
 
     handleLyric ({ lineNum }) {
       const scroller = this.$refs.scroller.$el
+      const scrollerOffsetTop = this.$refs.scroller.$el.offsetTop
       if (lineNum > this.midLyricLine) {
         const target = scroller.childNodes[lineNum - this.midLyricLine]
-        const offset = target.offsetTop - this.scollerOffetTop
+        const offset = target.offsetTop - scrollerOffsetTop
         scroller.scrollTo({
           top: offset,
           behavior: 'smooth'
