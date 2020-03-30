@@ -9,7 +9,7 @@ export default {
     Icon, ActionSheet, SongList
   },
 
-  inject: ['prev', 'next'],
+  inject: ['togglePlay', 'prev', 'next'],
 
   data () {
     return {
@@ -83,7 +83,7 @@ export default {
       />
       <Icon 
         :name="playing ? 'pause-circle-o' : 'play-circle-o'"
-        @click="SET_PLAYING(!playing)"
+        @click="togglePlay"
       />
       <Icon 
         name="arrow" 

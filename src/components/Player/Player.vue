@@ -78,6 +78,7 @@ export default {
   provide () {
     const _this = this
     return {
+      togglePlay: _this.togglePlay,
       next: _this.next,
       prev: _this.prev
     }
@@ -102,7 +103,7 @@ export default {
       this.getSongLyric(newSong.songMid).then(res => {
         this.lyric = new Lyric(res, this.handleLyric)
         this.lyric.seek(this.$refs.audio.currentTime * 1000 || 0)
-        this.lyric.play()
+        this.lyric.play(this.$refs.audio.currentTime)
       }).catch(err => feedback._errAlert(err))
     },
 
@@ -114,11 +115,9 @@ export default {
             setTimeout(() => this.SET_PLAYING(false))
           } else {
             this.$refs.audio.play && this.$refs.audio.play()
-            this.lyric && this.lyric.play()
           }
         } else {
           this.$refs.audio.pause()
-          this.lyric && this.lyric.stop()
         }
       })
     }
@@ -152,6 +151,11 @@ export default {
       }
 
       $body.addEventListener('touchstart', handler)
+    },
+
+    togglePlay () {
+      this.lyric && this.lyric.togglePlay()
+      this.SET_PLAYING(!this.playing)
     },
 
     changeSong (rule) {
