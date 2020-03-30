@@ -4,6 +4,7 @@ import Lyric from 'lyric-parser'
 import feedback from '@/utils/feedback'
 import ControlArea from './ControlArea'
 import LyricLine from './LyricLine'
+import MiniPlayer from './MiniPlayer'
 import Scroller from '@/components/Scroller/Scroller'
 import { Image, Slider, Icon } from 'vant'
 import { mapGetters, mapMutations, mapActions } from 'vuex'
@@ -19,6 +20,7 @@ export default {
     Slider,
     Icon,
     Scroller,
+    MiniPlayer,
     ControlArea,
     LyricLine
   },
@@ -42,11 +44,16 @@ export default {
   computed: {
     ...mapGetters('player', [
       'playing',
+      'fullpage',
       'playListLength',
       'currentPlayIndex',
       'currentPlaySong',
       'currentPlayMode'
     ]),
+
+    hasSong () {
+      return !ure.isEmpty(this.currentPlaySong)
+    },
 
     currentDuration () {
       return transDuration(Math.floor(this.currentPlayTime))
@@ -243,62 +250,78 @@ export default {
 </script>
 
 <template>
-  <div class="player" @touch.prevent="() => {}">
-    <Icon name="shrink" color="#aaa" size="30px" @click="SET_FULLPAGE(false)"></Icon>
+  <div>
+    <transition name="rott">
+      <div v-show="fullpage" class="player"  @touch.prevent="() => {}">
+        <Icon name="shrink" color="#aaa" size="30px" @click="SET_FULLPAGE(false)"></Icon>
 
-    <h2>{{ currentPlaySong.songName }}</h2>
-    <h3 class="van-ellipsis">{{ currentPlaySong.singer }}</h3>
+        <h2>{{ currentPlaySong.songName }}</h2>
+        <h3 class="van-ellipsis">{{ currentPlaySong.singer }}</h3>
 
-    <div class="bg-wrapper">
-      <img :src="currentPlaySong.pic">
-    </div>
+        <div class="bg-wrapper">
+          <img :src="currentPlaySong.pic">
+        </div>
 
-    <div class="pic-wrapper">
-      <vant-image 
-        :src="currentPlaySong.pic"
-        :class="playing ? 'play' : 'pause'"
-        class="song-pic"
-        width="200px"
-        height="200px"
-        round
+        <div class="pic-wrapper">
+          <vant-image 
+            :src="currentPlaySong.pic"
+            :class="playing ? 'play' : 'pause'"
+            class="song-pic"
+            width="200px"
+            height="200px"
+            round
+          />
+        </div>
+
+        <Scroller class="lyric-wrapper" ref="scroller">
+          <template v-if="lyric && lyric.lines">
+            <lyric-line
+              v-for="(item, index) in lyric.lines"
+              ref="lyricWord"
+              :key="index"
+              :content="item.txt"
+              :active="lyricActiveLine === index"
+            /> 
+          </template>
+        </Scroller>
+
+        <div class="progress-wrapper">
+          <span>{{ currentDuration }}</span>
+          <slider
+            v-model="progress" 
+            class="slider" 
+            active-color="#fff" inactive-color="#aaa"
+            @input="handleDragSliderEnd"
+            @drag-start="lockProgress = true"
+            @drag-end="handleDragSliderEnd"
+          />
+          <span>{{ totalDuration }}</span>
+        </div>
+
+        <control-area />
+
+        <audio 
+          ref="audio"
+          :src="songUrl"
+          @canplay="songReady = true"
+          @timeupdate="handleAudioTime"
+          @ended="next"
+        ></audio>
+      </div>
+    </transition>
+
+    <transition name="slide-right">
+      <mini-player 
+        v-show="hasSong && !fullpage"
+        :playing="playing"
+        :progress="progress" 
+        :pic="currentPlaySong.pic"
+        @click.native="SET_FULLPAGE(true)"
       />
-    </div>
-
-    <Scroller class="lyric-wrapper" ref="scroller">
-      <template v-if="lyric && lyric.lines">
-        <lyric-line
-          v-for="(item, index) in lyric.lines"
-          ref="lyricWord"
-          :key="index"
-          :content="item.txt"
-          :active="lyricActiveLine === index"
-        /> 
-      </template>
-    </Scroller>
-
-    <div class="progress-wrapper">
-      <span>{{ currentDuration }}</span>
-      <slider
-        v-model="progress" 
-        class="slider" 
-        active-color="#fff" inactive-color="#aaa"
-        @input="handleDragSliderEnd"
-        @drag-start="lockProgress = true"
-        @drag-end="handleDragSliderEnd"
-      />
-      <span>{{ totalDuration }}</span>
-    </div>
-
-    <control-area />
-
-    <audio 
-      ref="audio"
-      :src="songUrl"
-      @canplay="songReady = true"
-      @timeupdate="handleAudioTime"
-      @ended="next"
-    ></audio>
+    </transition>
+    
   </div>
+
 </template>
 
 <style lang="scss" scoped>

@@ -54,15 +54,6 @@
 
     .song-pic {
       border: 10px solid hsla(0,0%,100%,.1);
-      animation-fill-mode: both;
-      animation: rotate 20s linear infinite;
-
-      &.play{
-        animation-play-state: running;
-      }
-      &.pause{
-        animation-play-state: paused;
-      }
     }
   }
 
@@ -95,11 +86,25 @@
   }
 }
 
-@keyframes rotate {
-  0%{
-    transform: rotate(0);
-  }
-  100%{
-    transform: rotate(360deg);
-  }
+// big-player transition
+.rott-enter-active, .rott-leave-active {
+  transition: all .6s;
+}
+
+.rott-enter, .rott-leave-to {
+  opacity: 0;
+}
+
+.rott-enter {
+  transform: rotate(45deg) translateZ(0);
+  transform-origin: 100% 100%;
+}
+
+.slide-right-enter-active, .slide-right-leave-active {
+  transition: all .6s;
+}
+
+.slide-right-enter, .slide-right-leave-to {
+  opacity: 0;
+  transform: translate3d(150px, 0, 0);
 }

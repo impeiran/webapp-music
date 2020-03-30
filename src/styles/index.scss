@@ -24,3 +24,26 @@ h1, h2, h3, h4, h5, h6 {
 .box-shadow-block {
   box-shadow: 0 7px 13px rgba(0, 0, 0, 0.21);
 }
+
+// 唱片旋转
+.song-pic {
+  animation-fill-mode: both;
+  animation: rotate 20s linear infinite;
+
+  &.play{
+    animation-play-state: running;
+  }
+  &.pause{
+    animation-play-state: paused;
+  }
+}
+
+// avatar rotate
+@keyframes rotate {
+  0%{
+    transform: rotate(0);
+  }
+  100%{
+    transform: rotate(360deg);
+  }
+}
