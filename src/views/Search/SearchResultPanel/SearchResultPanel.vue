@@ -4,6 +4,7 @@ import SongList from '@/components/SongList/NormalList'
 import SingerResult from './SingerResult'
 import { getSingerAvatar } from '@/service/base'
 import { List, ActionSheet, Loading } from 'vant'
+import { mapActions } from 'vuex'
 
 export default {
   components: {
@@ -38,6 +39,8 @@ export default {
   },
 
   methods: {
+    ...mapActions('player', ['playSong']),
+
     updateLoading (value) {
       this.$emit('update:loading', value)
     },
@@ -78,7 +81,10 @@ export default {
           :song-num="singerInfo.songNum"
           @click.native="viewSinger"
         />
-        <song-list :list="list" useIcon></song-list>
+        <song-list 
+          :list="list" useIcon 
+          @select="playSong"
+        />
       </List>
 
       <Loading 

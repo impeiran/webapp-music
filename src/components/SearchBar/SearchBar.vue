@@ -44,6 +44,6 @@ export default {
   left: 0;
   right: 0;
   background: #fff;
-  z-index: 1000;
+  z-index: 800;
 }
 </style>
