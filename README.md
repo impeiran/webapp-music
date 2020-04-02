@@ -15,7 +15,7 @@ yarn
 yarn build
 ```
 
-具体部署代理规则，可看我提供的nginx配置
+具体部署代理规则，可看我提供的生产环境Nginx配置[nginx.prod.conf](./nginx.prod.conf)
 
 ### Preview
 
